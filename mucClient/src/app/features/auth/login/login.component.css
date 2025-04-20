@@ -33,21 +33,3 @@
   text-align: start;
   margin-bottom: 20px;
 }
-
-.login-button {
-  width: 100%;
-  padding: 6px 0;
-  font-size: 14px;
-  background-color: #00adbb;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  border: 1px solid #00adbb;
-}
-
-.login-button:hover {
-  background: #0094a0;
-  color: #fff;
-  border-color: #0094a0;
-}

@@ -29,7 +29,7 @@ body, html {
 
 .link-hover {
   font-size: 14px;
-  color: #007b85;
+  color: var(--link_hover_color);
   background: transparent;
   border: transparent;
   text-decoration: none;
@@ -38,7 +38,25 @@ body, html {
 }
 
 .link-hover:hover {
-  border-bottom: 1px solid #007b85;
+  border-bottom: 1px solid var(--link_hover_color);
+}
+
+.login-button {
+  width: 100%;
+  padding: 6px 0;
+  font-size: 14px;
+  background-color: var(--link_button_color);
+  color: var(--button_text_color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid var(--link_button_color);;
+}
+
+.login-button:hover {
+  background: var(--link_button_hover_color);
+  color: var(--button_text_color);
+  border-color: var(--link_button_hover_color);
 }
 
 .route-outlet-container {
@@ -69,6 +87,10 @@ body, html {
 
 :root {
     --top-navigation-bg-color: #0c606b;
+    --link_hover_color : #007b85;
+    --link_button_color : #00adbb;
+    --link_button_hover_color : #0094a0;
+    --button_text_color : #fff;
     --surface-a: #ffffff;
     --surface-b: #f1f3f5;
     --surface-c: #e9ecef;
