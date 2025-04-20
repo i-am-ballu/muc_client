@@ -42,11 +42,33 @@ body, html {
 }
 
 .route-outlet-container {
-  padding-top: 64px;
+  padding-top: 10px;
   height: 100%;
 }
 
+.top-navigation-container {
+  z-index: 1000;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  height: var(--navigation-height);
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 0 0 0 16px;
+  background-color: var(--top-navigation-bg-color);
+  transition-property: height, padding, background-color, padding;
+  transition-duration: .3s;
+}
+
+@media screen and (min-width: 992px) {
+    :root {
+        --navigation-height: 64px;
+    }
+}
+
 :root {
+    --top-navigation-bg-color: #0c606b;
     --surface-a: #ffffff;
     --surface-b: #f1f3f5;
     --surface-c: #e9ecef;
