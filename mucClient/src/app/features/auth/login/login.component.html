@@ -1,0 +1,70 @@
+<div class="content-container login-page-wrapper">
+
+  <div class="row w-100 login-container" style="max-width: 1000px;">
+    
+    <!-- Left side: branding -->
+    <div class="col-md-7 d-none d-md-block p-5 bg-white border-end">
+      <div class="d-flex flex-column justify-content-center h-100">
+        <img src="assets/logo.svg" alt="Logo" class="mb-4" style="width: 120px; padding-right: 10px">
+        <h3 class="fw-bold text-primary">Drive the right culture and increase engagement</h3>
+        <p class="text-muted mt-3">
+          Your legal Start Page is no ordinary intranet – it's a people centric collaboration hub on steroids, with most employees visiting multiple times per day.
+        </p>
+        <div class="row text-center mt-4">
+          <div class="col-4">
+            <img src="assets/icon1.svg" alt="icon" class="mb-2" width="32">
+            <p class="small text-muted">Team View</p>
+          </div>
+          <div class="col-4">
+            <img src="assets/icon2.svg" alt="icon" class="mb-2" width="32">
+            <p class="small text-muted">Analytics</p>
+          </div>
+          <div class="col-4">
+            <img src="assets/icon3.svg" alt="icon" class="mb-2" width="32">
+            <p class="small text-muted">Workflow</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right side: login form -->
+    <div class="col-md-5 bg-white p-5">
+      <div class="login-card-container">
+        <h4 class="mb-4 login-title">Sign In</h4>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="mb-3 form-group">
+            <input type="email" formControlName="email" id="email" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+              <div *ngIf="f.email.errors.required">Email is required</div>
+              <div *ngIf="f.email.errors.email">Invalid email format</div>
+            </div>
+          </div>
+
+          <div class="mb-3 form-group">
+            <input type="password" formControlName="password" id="password" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+            <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+              Password is required
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-7"></div>
+            <div class="col-md-2 mb-2 form-links">
+              <a href="#" class="link-hover">Forgot?</a>
+            </div>
+            <div class="col-md-3">
+              <button class="btn login-button" type="submit">Login</button>
+            </div>
+          </div>
+
+          <hr class="mt-2">
+          <div class="text-center mt-3 form-links">
+            <a href="#" class="text-decoration-none small link-hover">Register for an account</a>
+          </div>
+        </form>  
+      </div>
+    </div>
+  </div>
+</div>
