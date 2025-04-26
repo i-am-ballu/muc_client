@@ -14,17 +14,17 @@ export class AuthService {
 
   // Save token and user info in cookies
   public setSession(token: string, userInfo: any): void {
-    this.cookieService.set(this.tokenKey, token);
-    this.cookieService.set(this.userKey, JSON.stringify(userInfo));
+    this.cookieService.set('token', token);
+    this.cookieService.set('user_info', JSON.stringify(userInfo));
   }
  // Get token
   public getToken(): string | null {
-    return this.cookieService.get(this.tokenKey) || null;
+    return this.cookieService.get('token') || null;
   }
 
   // Get user info
   public getUserInfo(): any {
-    const userInfo = this.cookieService.get(this.userKey);
+    const userInfo = this.cookieService.get('user_info');
     return userInfo ? JSON.parse(userInfo) : null;
   }
 
@@ -35,7 +35,7 @@ export class AuthService {
 
   // Logout (clear cookies)
   public logout(): void {
-    this.cookieService.delete(this.tokenKey);
-    this.cookieService.delete(this.userKey);
+    this.cookieService.delete('token');
+    this.cookieService.delete('user_info');
   }
 }
