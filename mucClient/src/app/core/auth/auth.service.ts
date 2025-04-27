@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
@@ -6,16 +7,33 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class AuthService {
 
-  constructor(private cookieService: CookieService) { }
+  constructor(
+    private cookieService: CookieService,
+    private router: Router
+  ) { }
 
   public loginUser(body){
     return true;
   }
 
+  public days_90_ms = 90 * 24 * 60 * 60 * 1000;
+  public Date_now = + new Date();
+  public cookie_expire = new Date(this.Date_now + this.days_90_ms);
   // Save token and user info in cookies
-  public setSession(token: string, userInfo: any): void {
-    this.cookieService.set('token', token);
-    this.cookieService.set('user_info', JSON.stringify(userInfo));
+  public setSessionAndNavigate(userInfo){
+    let user_obj = {
+      login : true,
+      email : userInfo.email,
+      first_name : userInfo.first_name,
+      isSuperadmin : userInfo.isSuperadmin ? userInfo.isSuperadmin : 0,
+      last_name : userInfo.last_name,
+      admin_id : userInfo.superadmin_id ? userInfo.superadmin_id : 0,
+      token : userInfo.token,
+    }
+    this.removeCookies();
+    this.cookieService.set('user_info', '', -1, null, null, true, 'None');
+    this.cookieService.set('user_info', JSON.stringify(user_obj), this.cookie_expire, null, null, true, 'None');
+    this.router.navigate(['/dashboard/user_dashboard']);
   }
  // Get token
   public getToken(): string | null {
@@ -24,18 +42,18 @@ export class AuthService {
 
   // Get user info
   public getUserInfo(): any {
-    const userInfo = this.cookieService.get('user_info');
-    return userInfo ? JSON.parse(userInfo) : null;
+    let userInfo = this.cookieService.check('user_info') ? JSON.parse(this.cookieService.get('user_info')) : {};
+    return userInfo ? userInfo : {};
   }
 
   // Check if user is logged in
   public isLoggedIn(): boolean {
-    return !!this.getToken();
+    let userInfo = this.getUserInfo();
+    return userInfo && userInfo.login ? userInfo.login : false;
   }
 
   // Logout (clear cookies)
-  public logout(): void {
-    this.cookieService.delete('token');
-    this.cookieService.delete('user_info');
+  public removeCookies(){
+    this.cookieService.delete('user_info', ' / ', 'localhost');
   }
 }

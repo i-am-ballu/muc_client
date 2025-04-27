@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/auth/auth.service';
 import { LoginService } from "src/app/features/services/login.service";
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-login',
@@ -15,8 +16,13 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private loginService : LoginService,
-    private router: Router
-  ){}
+    private router: Router,
+    private cookieService: CookieService,
+  ){
+    if(this.authService.isLoggedIn()){
+      this.router.navigate(['/dashboard/user_dashboard']);
+    }
+  }
 
   public loginForm: FormGroup;
 
@@ -39,15 +45,7 @@ export class LoginComponent implements OnInit {
 
     this.loginService.login(this.loginForm.value).subscribe({
       next: (res: any) => {
-        let user_obj = {
-          email : res.email,
-          first_name : res.first_name,
-          last_name : res.last_name,
-          isSuperadmin : res.isSuperadmin,
-          superadmin_id : res.superadmin_id,
-        }
-        this.authService.setSession(res.token, user_obj);
-        this.router.navigate(['/dashboard/user_dashboard']);
+        this.authService.setSessionAndNavigate(res);
       },
       error: err => {
         console.log('Invalid credentials')
