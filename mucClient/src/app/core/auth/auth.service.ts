@@ -33,7 +33,8 @@ export class AuthService {
     this.removeCookies();
     this.cookieService.set('user_info', '', -1, null, null, true, 'None');
     this.cookieService.set('user_info', JSON.stringify(user_obj), this.cookie_expire, null, null, true, 'None');
-    this.router.navigate(['/dashboard/user_dashboard']);
+    let dashboard_path = user_obj && user_obj.isSuperadmin ? '/dashboard/superadmin_dashboard' : '/dashboard/user_dashboard';
+    this.router.navigate([dashboard_path]);
   }
  // Get token
   public getToken(): string | null {

@@ -20,7 +20,9 @@ export class LoginComponent implements OnInit {
     private cookieService: CookieService,
   ){
     if(this.authService.isLoggedIn()){
-      this.router.navigate(['/dashboard/user_dashboard']);
+      let user_obj = this.authService.getUserInfo();
+      let dashboard_path = user_obj && user_obj.isSuperadmin ? '/dashboard/superadmin_dashboard' : '/dashboard/user_dashboard';
+      this.router.navigate([dashboard_path]);
     }
   }
 
