@@ -1,0 +1,40 @@
+.registration-card-container {
+    max-width: 770px;
+    width: 100%;
+    padding: 30px;
+    margin: 100px auto;
+    background: #fff;
+    color: #343a40;
+    box-shadow: 0 2px 1px -1px #0003,0 1px 1px #00000024,0 1px 3px #0000001f;
+    border-radius: 6px
+}
+
+.registration-card-form-check {
+  display: flex;
+  justify-content: end;
+}
+
+.registration-text-right {
+  text-align-last: end;
+  text-align: right !important;
+}
+
+.registration-field-checkbox {
+  margin-bottom: 1rem;
+}
+
+.form-check .form-check-input {
+  float : none !important;
+}
+
+.registration-field-checkbox>label, .registration-field-radiobutton>label {
+    margin-left: .5rem;
+    line-height: 1;
+}
+
+.form-control:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 .2rem #f8f9fa;
+  border-color: #dee2e6;
+}

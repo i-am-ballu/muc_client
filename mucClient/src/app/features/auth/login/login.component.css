@@ -1,19 +1,4 @@
 /* Main login box */
-.content-container {
-    margin-right: auto;
-    margin-left: auto;
-    padding: 1.5rem 1rem 0;
-}
-
-.login-page-wrapper {
-  flex-direction: row;
-  width: 100%;
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
-  flex-shrink: 0;
-  flex-grow: 1;
-}
 
 .video-wrapper {
   width: 100%;

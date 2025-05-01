@@ -6,6 +6,22 @@ body, html {
   font-family: var(--font-family), sans-serif;
 }
 
+.content-container {
+    margin-right: auto;
+    margin-left: auto;
+    padding: 1.5rem 1rem 0;
+}
+
+.login-page-wrapper {
+  flex-direction: row;
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  flex-shrink: 0;
+  flex-grow: 1;
+}
+
 /* Form styling */
 .form-group {
   margin-bottom: 15px;
@@ -62,6 +78,14 @@ body, html {
 .route-outlet-container {
   padding-top: 10px;
   height: 100%;
+}
+
+.route-outlet-component {
+  line-height: 1.4285714286;
+  font-family: var(--font-family);
+  font-feature-settings: var(--font-feature-settings, normal);
+  font-size: 1rem;
+  font-weight: 400;
 }
 
 .top-navigation-container {
@@ -127,5 +151,3 @@ body, html {
     --maskbg: rgba(0, 0, 0, .4);
     --focus-ring: 0 0 0 .2rem #f8f9fa
 }
-
-

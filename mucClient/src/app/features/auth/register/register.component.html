@@ -1,1 +1,80 @@
-<p>register works!</p>
+<div class="content-container login-page-wrapper">
+  <div class="registration-card-container">
+    <h3>Create an Account</h3>
+    <p>Already have an account? <button class="text-decoration-none small link-hover" type="button">Sign in.</button></p>
+    <form class="row g-3" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="col-md-12">
+        <label>Email</label>
+        <input formControlName="email" type="email" class="form-control" />
+      </div>
+
+      <div class="col-md-6">
+        <label>Password</label>
+        <input formControlName="password" type="password" class="form-control" />
+      </div>
+      <div class="col-md-6">
+        <label>Confirm Password</label>
+        <input formControlName="confirmPassword" type="password" class="form-control" />
+      </div>
+
+      <div class="col-md-6">
+        <label>Company</label>
+        <input formControlName="company" type="text" class="form-control" />
+      </div>
+      <div class="col-md-6">
+        <label>Company Role</label>
+        <input formControlName="companyRole" type="text" class="form-control" />
+      </div>
+
+      <div class="col-md-6">
+        <label>First Name</label>
+        <input formControlName="firstName" type="text" class="form-control" />
+      </div>
+      <div class="col-md-6">
+        <label>Location</label>
+        <select formControlName="country" class="form-control">
+          <option>Select a Country</option>
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <label>Last Name</label>
+        <input formControlName="lastName" type="text" class="form-control" />
+      </div>
+      <div class="col-md-6">
+        <label>State</label>
+        <select formControlName="state" class="form-control">
+          <option>Select a State</option>
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <label>Position</label>
+        <input formControlName="position" type="text" class="form-control" />
+      </div>
+      <div class="col-md-6">
+        <label>City</label>
+        <select formControlName="city" class="form-control">
+          <option>Select a City</option>
+        </select>
+      </div>
+
+      <div class="col-md-12 registration-text-right">
+        <div class="form-check registration-field-checkbox">
+          <input formControlName="agree" type="checkbox" class="form-check-input" />
+          <label class="form-check-label">
+            Agree with <strong>Terms of Use</strong> and <strong>Privacy Policy</strong>
+          </label>
+          <label class="mt-2">
+            By clicking Register, you agree to our and that you have read our .
+          </label>
+        </div>
+      </div>
+
+      <div class="col-md-9"></div>
+      <div class="col-md-3">
+        <button class="btn login-button" type="submit">Register</button>
+      </div>
+    </form>
+  </div>
+</div>
