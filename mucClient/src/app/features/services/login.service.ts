@@ -15,4 +15,17 @@ export class LoginService {
     // return this.http.get(`${this.baseUrl}/login`, {params : body});
     return this.http.post(`${this.baseUrl}/login`, body);
   }
+
+
+  getCountries(body) {
+    return this.http.get(this.baseUrl+"/locations/countries/", {params : body});
+  }
+
+  getStates(body) {
+    return this.http.post<any>('http://localhost:5000/api/location/states', body);
+  }
+
+  getCities(body) {
+    return this.http.post<any>('http://localhost:5000/api/location/cities', body);
+  }
 }

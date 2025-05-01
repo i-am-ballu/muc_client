@@ -32,9 +32,14 @@
       </div>
       <div class="col-md-6">
         <label>Location</label>
-        <select formControlName="country" class="form-control">
-          <option>Select a Country</option>
-        </select>
+        <ng-select
+          [items]="countrie_list"
+          placeholder="Select a Country"
+          formControlName="country"
+          [multiple]="false"
+          [searchable]="true"
+        >
+        </ng-select>
       </div>
 
       <div class="col-md-6">

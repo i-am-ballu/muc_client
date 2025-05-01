@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LoginService } from "src/app/features/services/login.service";
 
 @Component({
   selector: 'app-register',
@@ -10,7 +11,10 @@ export class RegisterComponent implements OnInit {
 
   public registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private loginService : LoginService,
+  ) { }
 
   ngOnInit() {
     this.registerForm = this.fb.group({
@@ -22,10 +26,24 @@ export class RegisterComponent implements OnInit {
       firstName: [''],
       lastName: [''],
       position: [''],
-      country: [''],
+      country: [null, Validators.required],
       state: [''],
       city: [''],
       agree: [false, Validators.requiredTrue]
+    });
+    this.getCountries();
+  }
+
+  public countrie_list : any;
+  public getCountries(){
+    this.loginService.getCountries({}).subscribe({
+      next: (res: any) => {
+        this.countrie_list = res && res.countries && res.countries.length ? res.countries : []
+        console.log('res -------', res)
+      },
+      error: err => {
+        console.log('error--------', err)
+      }
     });
   }
 

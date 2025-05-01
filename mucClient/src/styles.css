@@ -151,3 +151,8 @@ body, html {
     --maskbg: rgba(0, 0, 0, .4);
     --focus-ring: 0 0 0 .2rem #f8f9fa
 }
+
+/* ng select */
+.ng-select.ng-select-single .ng-select-container {
+    height: 43px !important;
+}

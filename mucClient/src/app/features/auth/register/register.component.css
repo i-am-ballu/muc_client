@@ -38,3 +38,10 @@
   box-shadow: 0 0 0 .2rem #f8f9fa;
   border-color: #dee2e6;
 }
+
+.ng-select:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 .2rem #f8f9fa;
+  border-color: #dee2e6;
+}
