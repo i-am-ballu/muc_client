@@ -18,18 +18,24 @@
       </div>
 
       <div class="col-md-6">
-        <label>Company</label>
-        <input formControlName="company" type="text" class="form-control" />
-      </div>
-      <div class="col-md-6">
-        <label>Company Role</label>
-        <input formControlName="companyRole" type="text" class="form-control" />
-      </div>
-
-      <div class="col-md-6">
         <label>First Name</label>
         <input formControlName="firstName" type="text" class="form-control" />
       </div>
+      <div class="col-md-6">
+        <label>Last Name</label>
+        <input formControlName="lastName" type="text" class="form-control" />
+      </div>
+
+      <div class="col-md-6">
+        <label>Company</label>
+        <input formControlName="company" type="text" class="form-control" />
+      </div>
+
+      <div class="col-md-6">
+        <label>Mobile Number</label>
+        <input formControlName="mobile_number" type="text" class="form-control" />
+      </div>
+
       <div class="col-md-6">
         <label>Location</label>
         <ng-select
@@ -38,30 +44,40 @@
           formControlName="country"
           [multiple]="false"
           [searchable]="true"
+          (change)="onChangeLocation($event)"
         >
         </ng-select>
       </div>
 
       <div class="col-md-6">
-        <label>Last Name</label>
-        <input formControlName="lastName" type="text" class="form-control" />
-      </div>
-      <div class="col-md-6">
         <label>State</label>
-        <select formControlName="state" class="form-control">
-          <option>Select a State</option>
-        </select>
+        <ng-select
+          [items]="state_list"
+          bindLabel="name"
+          placeholder="Select a State"
+          formControlName="state"
+          [multiple]="false"
+          [searchable]="true"
+          (change)="onChangeState($event)"
+        >
+        </ng-select>
       </div>
 
       <div class="col-md-6">
-        <label>Position</label>
-        <input formControlName="position" type="text" class="form-control" />
+        <label>City</label>
+        <ng-select
+          [items]="cities_list"
+          placeholder="Select a City"
+          formControlName="city"
+          [multiple]="false"
+          [searchable]="true"
+          (change)="onChangeCity($event)"
+        >
+        </ng-select>
       </div>
       <div class="col-md-6">
-        <label>City</label>
-        <select formControlName="city" class="form-control">
-          <option>Select a City</option>
-        </select>
+        <label>Address</label>
+        <input formControlName="address" type="text" class="form-control" />
       </div>
 
       <div class="col-md-12 registration-text-right">

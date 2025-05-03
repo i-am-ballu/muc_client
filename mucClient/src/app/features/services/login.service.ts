@@ -22,10 +22,10 @@ export class LoginService {
   }
 
   getStates(body) {
-    return this.http.post<any>('http://localhost:5000/api/location/states', body);
+    return this.http.post<any>(this.baseUrl+"/locations/states/", body);
   }
 
   getCities(body) {
-    return this.http.post<any>('http://localhost:5000/api/location/cities', body);
+    return this.http.post<any>(this.baseUrl+"/locations/cities/", body);
   }
 }

@@ -21,14 +21,14 @@ export class RegisterComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
       confirmPassword: ['', Validators.required],
-      company: [''],
-      companyRole: [''],
-      firstName: [''],
-      lastName: [''],
-      position: [''],
+      company: ['', Validators.required],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
       country: [null, Validators.required],
-      state: [''],
-      city: [''],
+      state: [null, Validators.required],
+      city: [null, Validators.required],
+      address:['', Validators.required],
+      mobile_number:['', Validators.required],
       agree: [false, Validators.requiredTrue]
     });
     this.getCountries();
@@ -45,6 +45,47 @@ export class RegisterComponent implements OnInit {
         console.log('error--------', err)
       }
     });
+  }
+
+  public state_list : any;
+  public selected_country : any;
+  public onChangeLocation(event){
+    this.selected_country = event;
+    let obj = {
+      country : this.selected_country,
+    }
+    this.loginService.getStates(obj).subscribe({
+      next: (res: any) => {
+        this.state_list = res && res.states && res.states.length ? res.states : []
+        console.log('res -------', res)
+      },
+      error: err => {
+        console.log('error--------', err)
+      }
+    });
+  }
+
+  public cities_list : any;
+  public selected_cities : any;
+  public onChangeState(event){
+    this.selected_cities = event.name;
+    let obj = {
+      country : this.selected_country,
+      state : this.selected_cities,
+    }
+    this.loginService.getCities(obj).subscribe({
+      next: (res: any) => {
+        this.cities_list = res && res.cities && res.cities.length ? res.cities : []
+        console.log('res -------', res)
+      },
+      error: err => {
+        console.log('error--------', err)
+      }
+    });
+  }
+
+  public onChangeCity(event){
+    console.log('event', event)
   }
 
   onSubmit() {
