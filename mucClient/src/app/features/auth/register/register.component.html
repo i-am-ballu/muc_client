@@ -2,49 +2,86 @@
   <div class="registration-card-container">
     <h3>Create an Account</h3>
     <p>Already have an account? <button class="text-decoration-none small link-hover" type="button">Sign in.</button></p>
-    <form class="row g-3" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <form class="row g-3" [formGroup]="registerForm" (ngSubmit)="onSubmitRegister()">
       <div class="col-md-12">
         <label>Email</label>
-        <input formControlName="email" type="email" class="form-control" />
+        <input
+          formControlName="email"
+          type="email"
+          class="form-control"
+          [ngClass]="{'is-invalid': submitted && registerForm.get('email')?.errors?.required}"
+        />
       </div>
 
       <div class="col-md-6">
         <label>Password</label>
-        <input formControlName="password" type="password" class="form-control" />
+        <input
+          formControlName="password"
+          type="password"
+          class="form-control"
+          [ngClass]="{'is-invalid': submitted && registerForm.get('password')?.errors?.required}"
+        />
       </div>
       <div class="col-md-6">
         <label>Confirm Password</label>
-        <input formControlName="confirmPassword" type="password" class="form-control" />
+        <input
+          formControlName="confirmPassword"
+          type="password"
+          class="form-control"
+          [ngClass]="{'is-invalid': submitted && registerForm.get('confirmPassword')?.errors?.required}"
+        />
       </div>
 
       <div class="col-md-6">
         <label>First Name</label>
-        <input formControlName="firstName" type="text" class="form-control" />
+        <input
+          formControlName="first_name"
+          type="text"
+          class="form-control"
+          [ngClass]="{'is-invalid': submitted && registerForm.get('first_name')?.errors?.required}"
+        />
       </div>
       <div class="col-md-6">
         <label>Last Name</label>
-        <input formControlName="lastName" type="text" class="form-control" />
+        <input
+          formControlName="last_name"
+          type="text"
+          class="form-control"
+          [ngClass]="{'is-invalid': submitted && registerForm.get('last_name')?.errors?.required}"
+        />
       </div>
 
       <div class="col-md-6">
         <label>Company</label>
-        <input formControlName="company" type="text" class="form-control" />
+        <input
+          formControlName="company"
+          type="text"
+          class="form-control"
+          [ngClass]="{'is-invalid': submitted && registerForm.get('company')?.errors?.required}"
+        />
       </div>
 
       <div class="col-md-6">
         <label>Mobile Number</label>
-        <input formControlName="mobile_number" type="text" class="form-control" />
+        <input
+          formControlName="mobile_number"
+          type="text"
+          class="form-control"
+          [ngClass]="{'is-invalid': submitted && registerForm.get('mobile_number')?.errors?.required}"
+        />
       </div>
 
       <div class="col-md-6">
         <label>Location</label>
         <ng-select
           [items]="countrie_list"
+          bindLabel="name"
           placeholder="Select a Country"
           formControlName="country"
           [multiple]="false"
           [searchable]="true"
           (change)="onChangeLocation($event)"
+          [ngClass]="{'is-invalid': submitted && registerForm.get('country')?.errors?.required}"
         >
         </ng-select>
       </div>
@@ -59,6 +96,7 @@
           [multiple]="false"
           [searchable]="true"
           (change)="onChangeState($event)"
+          [ngClass]="{'is-invalid': submitted && registerForm.get('state')?.errors?.required}"
         >
         </ng-select>
       </div>
@@ -67,22 +105,34 @@
         <label>City</label>
         <ng-select
           [items]="cities_list"
+          bindLabel="name"
           placeholder="Select a City"
           formControlName="city"
           [multiple]="false"
           [searchable]="true"
           (change)="onChangeCity($event)"
+          [ngClass]="{'is-invalid': submitted && registerForm.get('city')?.errors?.required}"
         >
         </ng-select>
       </div>
       <div class="col-md-6">
         <label>Address</label>
-        <input formControlName="address" type="text" class="form-control" />
+        <input
+          formControlName="address"
+          type="text"
+          class="form-control"
+          [ngClass]="{'is-invalid': submitted && registerForm.get('address')?.errors?.required}"
+        />
       </div>
 
       <div class="col-md-12 registration-text-right">
         <div class="form-check registration-field-checkbox">
-          <input formControlName="agree" type="checkbox" class="form-check-input" />
+          <input
+            formControlName="agree"
+            type="checkbox"
+            class="form-check-input"
+            [ngClass]="{'is-invalid': submitted && registerForm.get('agree')?.errors?.required}"
+          />
           <label class="form-check-label">
             Agree with <strong>Terms of Use</strong> and <strong>Privacy Policy</strong>
           </label>

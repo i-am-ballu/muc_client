@@ -156,3 +156,17 @@ body, html {
 .ng-select.ng-select-single .ng-select-container {
     height: 43px !important;
 }
+
+.ng-select.is-invalid {
+  border: 1px solid var(--bs-form-invalid-border-color) !important;
+  border-radius: 5px;
+}
+
+.form-control.is-invalid, .was-validated .form-control:invalid {
+    border-color: var(--bs-form-invalid-border-color);
+    padding-right: unset;
+    background-image: none; /* Remove background image */
+    background-repeat: no-repeat; /* Ensure no repetition of background */
+    background-position: unset; /* Reset position */
+    background-size: unset; /* Reset size */
+}
