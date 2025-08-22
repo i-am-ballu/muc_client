@@ -18,7 +18,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     this.registerForm = this.fb.group({
-      company: ['', Validators.required],
+      company: [null, Validators.required],
       first_name: ['', Validators.required],
       last_name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -31,7 +31,21 @@ export class RegisterComponent implements OnInit {
       city: [null, Validators.required],
       agree: [false, Validators.requiredTrue]
     });
+    this.getSuperAdminCompanyDetails();
     this.getCountries();
+  }
+
+  public company_list : any;
+  public getSuperAdminCompanyDetails(){
+    this.loginService.getSuperAdminDetails({}).subscribe({
+      next: (res: any) => {
+        this.company_list = res && res.data && res.data.company_list && res.data.company_list.length ? res.data.company_list : [];
+        console.log('res -------', res.data )
+      },
+      error: err => {
+        console.log('error--------', err)
+      }
+    });
   }
 
   public countrie_list : any;
@@ -95,25 +109,33 @@ export class RegisterComponent implements OnInit {
       return;
     }
     let company = this.registerForm.get('company').value;
+    let first_name = this.registerForm && this.registerForm.get('first_name') ? this.registerForm.get('first_name').value : '';
+    let last_name = this.registerForm && this.registerForm.get('last_name') ? this.registerForm.get('last_name').value : '';
+    let email = this.registerForm && this.registerForm.get('email') ? this.registerForm.get('email').value : '';
+    let password = this.registerForm && this.registerForm.get('password') ? this.registerForm.get('password').value : '';
+    let confirmPassword = this.registerForm && this.registerForm.get('confirmPassword') ? this.registerForm.get('confirmPassword').value : '';
+    let address = this.registerForm && this.registerForm.get('address') ? this.registerForm.get('address').value : '';
+    let mobile_number = this.registerForm && this.registerForm.get('mobile_number') ? this.registerForm.get('mobile_number').value : '';
+
     let agree = this.registerForm.get('agree').value;
     let country = this.registerForm.get('country').value.name;
-    let state = this.registerForm.get('state').value;
-    let city = this.registerForm.get('city').value;
+    let state = this.registerForm.get('state').value.name;
+    let city = this.registerForm.get('city').value.name;
     let obj = {
-      company: company,
-      company_id : company && company.company_id ? company.company_id : 0,
-      first_name: this.registerForm.get('first_name').value,
-      last_name: this.registerForm.get('last_name').value,
-      email: this.registerForm.get('email').value,
-      password: this.registerForm.get('password').value,
-      confirmPassword: this.registerForm.get('confirmPassword').value,
-      address: this.registerForm.get('address').value,
-      mobile_number: this.registerForm.get('mobile_number').value,
+      company_id : company && company.superadmin_id ? company.superadmin_id : 0,
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+      password: password,
+      confirmPassword: confirmPassword,
+      address: address,
+      mobile_number: mobile_number,
       country: country,
       state: state,
       city: city,
       agree: agree ? agree : false,
     }
+
 
   }
 

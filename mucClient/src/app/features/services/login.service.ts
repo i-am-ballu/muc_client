@@ -16,6 +16,10 @@ export class LoginService {
     return this.http.post(`${this.baseUrl}/login`, body);
   }
 
+  getSuperAdminDetails(body){
+    return this.http.get(this.baseUrl+"/accounts/getSuperAdminDetails/", {params : body});
+  }
+
 
   getCountries(body) {
     return this.http.get(this.baseUrl+"/locations/countries/", {params : body});

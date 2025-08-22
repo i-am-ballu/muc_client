@@ -53,12 +53,16 @@
 
       <div class="col-md-6">
         <label>Company</label>
-        <input
+        <ng-select
+          [items]="company_list"
+          bindLabel="first_name"
+          placeholder="Select a Company"
           formControlName="company"
-          type="text"
-          class="form-control"
+          [multiple]="false"
+          [searchable]="true"
           [ngClass]="{'is-invalid': submitted && registerForm.get('company')?.errors?.required}"
-        />
+        >
+        </ng-select>
       </div>
 
       <div class="col-md-6">
