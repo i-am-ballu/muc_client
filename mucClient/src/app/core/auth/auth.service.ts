@@ -27,7 +27,7 @@ export class AuthService {
       first_name : userInfo.first_name,
       isSuperadmin : userInfo.isSuperadmin ? userInfo.isSuperadmin : 0,
       last_name : userInfo.last_name,
-      admin_id : userInfo.superadmin_id ? userInfo.superadmin_id : 0,
+      admin_id : userInfo.id ? userInfo.id : 0,
       token : userInfo.token,
     }
     this.removeCookies();

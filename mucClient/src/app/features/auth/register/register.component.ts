@@ -136,6 +136,15 @@ export class RegisterComponent implements OnInit {
       agree: agree ? agree : false,
     }
 
+    this.loginService.upsertUser(obj).subscribe({
+      next: (res: any) => {
+        console.log('res ------- ', res)
+      },
+      error: err => {
+        console.log('Invalid credentials')
+      }
+    });
+
 
   }
 

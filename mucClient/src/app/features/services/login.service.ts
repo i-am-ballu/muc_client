@@ -11,9 +11,12 @@ export class LoginService {
 
   }
 
+  upsertUser(body){
+    return this.http.post(`${this.baseUrl}/register/users/add/`, body);
+  }
+
   login(body){
-    // return this.http.get(`${this.baseUrl}/login`, {params : body});
-    return this.http.post(`${this.baseUrl}/login`, body);
+    return this.http.post(`${this.baseUrl}/register/login/`, body);
   }
 
   getSuperAdminDetails(body){

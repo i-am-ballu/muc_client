@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
 
     this.loginService.login(this.loginForm.value).subscribe({
       next: (res: any) => {
-        this.authService.setSessionAndNavigate(res);
+        this.authService.setSessionAndNavigate(res.data);
       },
       error: err => {
         console.log('Invalid credentials')
