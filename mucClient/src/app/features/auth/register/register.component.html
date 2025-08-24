@@ -1,7 +1,7 @@
 <div class="content-container login-page-wrapper">
   <div class="registration-card-container">
     <h3>Create an Account</h3>
-    <p>Already have an account? <button class="text-decoration-none small link-hover" type="button">Sign in.</button></p>
+    <p>Already have an account? <button class="text-decoration-none small link-hover" type="button" (click)="onClickSignIn()">Sign in.</button></p>
     <form class="row g-3" [formGroup]="registerForm" (ngSubmit)="onSubmitRegister()">
       <div class="col-md-12">
         <label>Email</label>

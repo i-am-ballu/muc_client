@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginService } from "src/app/features/services/login.service";
 
@@ -14,6 +15,7 @@ export class RegisterComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private loginService : LoginService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -40,7 +42,6 @@ export class RegisterComponent implements OnInit {
     this.loginService.getSuperAdminDetails({}).subscribe({
       next: (res: any) => {
         this.company_list = res && res.data && res.data.company_list && res.data.company_list.length ? res.data.company_list : [];
-        console.log('res -------', res.data )
       },
       error: err => {
         console.log('error--------', err)
@@ -52,8 +53,7 @@ export class RegisterComponent implements OnInit {
   public getCountries(){
     this.loginService.getCountries({}).subscribe({
       next: (res: any) => {
-        this.countrie_list = res && res.data && res.data.countries && res.data.countries.length ? res.data.countries : []
-        console.log('res -------', res)
+        this.countrie_list = res && res.data && res.data.countries && res.data.countries.length ? res.data.countries : [];
       },
       error: err => {
         console.log('error--------', err)
@@ -70,8 +70,7 @@ export class RegisterComponent implements OnInit {
     }
     this.loginService.getStates(obj).subscribe({
       next: (res: any) => {
-        this.state_list = res && res.data && res.data.states && res.data.states.length ? res.data.states : []
-        console.log('res -------', res)
+        this.state_list = res && res.data && res.data.states && res.data.states.length ? res.data.states : [];
       },
       error: err => {
         console.log('error--------', err)
@@ -89,8 +88,7 @@ export class RegisterComponent implements OnInit {
     }
     this.loginService.getCities(obj).subscribe({
       next: (res: any) => {
-        this.cities_list = res && res.data && res.data.cities && res.data.cities.length ? res.data.cities : []
-        console.log('res -------', res)
+        this.cities_list = res && res.data && res.data.cities && res.data.cities.length ? res.data.cities : [];
       },
       error: err => {
         console.log('error--------', err)
@@ -138,14 +136,17 @@ export class RegisterComponent implements OnInit {
 
     this.loginService.upsertUser(obj).subscribe({
       next: (res: any) => {
-        console.log('res ------- ', res)
+        this.router.navigate(["/auth/login"]);
       },
       error: err => {
-        console.log('Invalid credentials')
+        let error_message = err && err.error && err.error.data && err.error.data.message ? err.error.data.message : err && err.error ? err.error.message : "";
+        console.log(error_message);
       }
     });
+  }
 
-
+  public onClickSignIn(){
+    this.router.navigate(["/auth/login"]);
   }
 
 }
