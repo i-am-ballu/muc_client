@@ -1,6 +1,26 @@
 
+.nav-element-center {
+  display: flex;
+  gap: 15px; /* space between buttons */
+}
+
 .nav-element-start {
 	display: flex;
-    align-items: center;
-    gap: 8px;
+  align-items: center;
+  gap: 8px;
+}
+
+.home-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.home-btn:hover {
+  color: #ffffff99;
 }

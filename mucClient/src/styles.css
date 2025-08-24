@@ -76,7 +76,7 @@ body, html {
 }
 
 .route-outlet-container {
-  padding-top: 10px;
+  padding: 50px 30px;
   height: 100%;
 }
 
@@ -97,7 +97,7 @@ body, html {
   display: flex;
   align-items: center;
   gap: 32px;
-  padding: 0 0 0 16px;
+  padding: 20px 30px;
   background-color: var(--top-navigation-bg-color);
   transition-property: height, padding, background-color, padding;
   transition-duration: .3s;

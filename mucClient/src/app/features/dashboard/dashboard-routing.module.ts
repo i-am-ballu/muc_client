@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from 'src/app/core/auth/auth.guard';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
-import { SuperadminDashboardComponent } from './superadmin-dashboard/superadmin-dashboard.component';
+import { SaManageComponent } from './superadmin/sa-manage/sa-manage.component';
+import { SaHomeComponent } from './superadmin/sa-home/sa-home.component';
 
 
 const routes: Routes = [
@@ -17,8 +18,16 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'superadmin_dashboard',
-    component: SuperadminDashboardComponent,
+    path: 'sa_dashboard',
+    component: SaHomeComponent,
+    canActivate: [AuthGuard],
+    children: [
+
+    ]
+  },
+  {
+    path: 'sa_manage',
+    component: SaManageComponent,
     canActivate: [AuthGuard],
     children: [
 

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-top-navigation',
@@ -7,9 +9,29 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TopNavigationComponent implements OnInit {
 
-  constructor() { }
+  public isLoggedIn : boolean = false;
+  public isSuperadmin : boolean = false;
+  
+  constructor(
+    private cookieService: CookieService,
+    private router: Router,
+  ) { }
 
   ngOnInit() {
+    let userInfo = this.getUserInfo();
+    this.isLoggedIn = userInfo && userInfo.login ? userInfo.login : false;
+    this.isSuperadmin = userInfo && userInfo.isSuperadmin ? userInfo.isSuperadmin : false;
+  }
+
+  // Get user info
+  public getUserInfo(): any {
+    let userInfo = this.cookieService.check('user_info') ? JSON.parse(this.cookieService.get('user_info')) : {};
+    return userInfo ? userInfo : {};
+  }
+
+  public onClickNavigation(tab_name){
+    let dashboard_path = tab_name == 'Home' ? '/dashboard/sa_dashboard' : '/dashboard/sa_manage';
+    this.router.navigate([dashboard_path]);
   }
 
 }

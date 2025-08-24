@@ -1,0 +1,42 @@
+<div class="d-flex" style="min-height: 100vh; gap: 20px;">
+
+  <!-- Sidebar -->
+  <div class="flex-shrink-0 bg-white text-dark p-4 border shadow-sm rounded" style="width: 20%;">
+    <h2 class="mb-4">Manage</h2>
+    <ul class="nav flex-column" id="sidebarMenu">
+      <li class="nav-item mb-2">
+        <button
+          class="btn w-100 text-start sidebar_button"
+          [ngClass]="selectedMenu === 'Users' ? 'active' : ''"
+          (click)="loadContent('Users')"
+        ><i class="fa fa-users" aria-hidden="true"></i>
+        Users</button>
+      </li>
+      <li class="nav-item mb-2">
+        <button
+          class="btn w-100 text-start sidebar_button"
+          [ngClass]="selectedMenu === 'Collection' ? 'active' : ''"
+          (click)="loadContent('Collection')"
+        ><i class="fa fa-th-large" aria-hidden="true"></i>
+        Collection</button>
+      </li>
+      <li class="nav-item mb-2">
+        <button
+          class="btn w-100 text-start sidebar_button"
+          [ngClass]="selectedMenu === 'Distribution' ? 'active' : ''"
+          (click)="loadContent('Distribution')"
+        ><i class="fa fa-slack" aria-hidden="true"></i>
+        Distribution</button>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex-grow-1 bg-white p-4 border shadow-sm rounded">
+    <h2 id="content-title" class="mb-3">Manage Dashboard</h2>
+    <div id="content-area" class="border rounded p-3 bg-light">
+      Select an action from the sidebar.
+    </div>
+  </div>
+
+</div>

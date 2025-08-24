@@ -1,0 +1,16 @@
+.sidebar_button {
+  background: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.sidebar_button:hover {
+  background: #f1f1f1;
+}
+
+.sidebar_button.active {
+  background: var(--primary-color);
+  color: white;
+}
