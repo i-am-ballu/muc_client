@@ -35,4 +35,12 @@ export class LoginService {
   getCities(body) {
     return this.http.post<any>(this.baseUrl+"/locations/cities/", body);
   }
+
+  getAllUsersBasedOnCompanyId(body){
+    return this.http.get(`${this.baseUrl}/register/users/`, {params : body});
+  }
+
+  getUserDetailsBasedOnUserId(body){
+    return this.http.get(this.baseUrl+"/water_logs/payment-status/", {params : body});
+  }
 }

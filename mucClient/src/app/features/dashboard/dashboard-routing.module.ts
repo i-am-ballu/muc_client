@@ -2,8 +2,10 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from 'src/app/core/auth/auth.guard';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
-import { SaManageComponent } from './superadmin/sa-manage/sa-manage.component';
 import { SaHomeComponent } from './superadmin/sa-home/sa-home.component';
+import { SaManageComponent } from './superadmin/manage/sa-manage/sa-manage.component';
+import { SaUsersComponent } from './superadmin/manage/sa-users/sa-users.component';
+import { SaDistributionComponent } from './superadmin/manage/sa-distribution/sa-distribution.component';
 
 
 const routes: Routes = [
@@ -30,7 +32,19 @@ const routes: Routes = [
     component: SaManageComponent,
     canActivate: [AuthGuard],
     children: [
-
+      {
+        path: '',
+        redirectTo: 'users',
+        pathMatch: 'full'
+      },
+      {
+        path: 'users',
+        component: SaUsersComponent,
+      },
+      {
+        path: 'distribution',
+        component: SaDistributionComponent
+      }
     ]
   }
 ];

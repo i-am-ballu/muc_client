@@ -7,24 +7,16 @@
       <li class="nav-item mb-2">
         <button
           class="btn w-100 text-start sidebar_button"
-          [ngClass]="selectedMenu === 'Users' ? 'active' : ''"
-          (click)="loadContent('Users')"
+          [ngClass]="active_tab === 'users' ? 'active' : ''"
+          (click)="loadContent('users')"
         ><i class="fa fa-users" aria-hidden="true"></i>
         Users</button>
       </li>
       <li class="nav-item mb-2">
         <button
           class="btn w-100 text-start sidebar_button"
-          [ngClass]="selectedMenu === 'Collection' ? 'active' : ''"
-          (click)="loadContent('Collection')"
-        ><i class="fa fa-th-large" aria-hidden="true"></i>
-        Collection</button>
-      </li>
-      <li class="nav-item mb-2">
-        <button
-          class="btn w-100 text-start sidebar_button"
-          [ngClass]="selectedMenu === 'Distribution' ? 'active' : ''"
-          (click)="loadContent('Distribution')"
+          [ngClass]="active_tab === 'distribution' ? 'active' : ''"
+          (click)="loadContent('distribution')"
         ><i class="fa fa-slack" aria-hidden="true"></i>
         Distribution</button>
       </li>
@@ -34,9 +26,7 @@
   <!-- Main Content -->
   <div class="flex-grow-1 bg-white p-4 border shadow-sm rounded">
     <h2 id="content-title" class="mb-3">Manage Dashboard</h2>
-    <div id="content-area" class="border rounded p-3 bg-light">
-      Select an action from the sidebar.
-    </div>
+    <router-outlet></router-outlet>
   </div>
 
 </div>
