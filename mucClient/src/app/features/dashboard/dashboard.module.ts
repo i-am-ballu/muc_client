@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
@@ -21,7 +21,7 @@ import { SaDistributionComponent } from './superadmin/manage/sa-distribution/sa-
   imports: [
     CommonModule,
     DashboardRoutingModule,
-    NgxDatatableModule
+    SharedModule
   ]
 })
 export class DashboardModule { }

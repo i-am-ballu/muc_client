@@ -1,0 +1,46 @@
+<p>data-table works!</p>
+<ngx-datatable
+  class="bootstrap"
+  [rows]="rowsData"
+  [columns]="columnDefs"
+  [headerHeight]="50"
+  [footerHeight]="50"
+  [rowHeight]="'auto'"
+  [columnMode]="'force'"
+  [count]="count"
+  [offset]="offset"
+  [limit]="page_size"
+  [selected]="selected"
+  (select)="onSelect($event)"
+  [selectionType]="'checkbox'"
+  [externalPaging]="true"
+>
+
+  <ngx-datatable-column
+    [width]="40"
+    [sortable]="false"
+    [headerCheckboxable]="true"
+    [checkboxable]="true">
+  </ngx-datatable-column>
+
+  <!-- Serial Number Column -->
+  <ngx-datatable-column name="S.No" [width]="80" [sortable]="false">
+    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex">
+      {{ (offset * page_size) + rowIndex + 1 }}
+    </ng-template>
+  </ngx-datatable-column>
+
+  <!-- Dynamic Columns -->
+ <ngx-datatable-column *ngFor="let col of columnDefs" [name]="col.name" [prop]="col.prop">
+   <ng-template ngx-datatable-cell-template let-value="value" let-row="row">
+     <!-- Special handling if column is user_id -->
+     <ng-container *ngIf="col.clickable; else normalCell">
+       <a class="datatable-link" href="javascript:void(0)" (click)="onClickAbleRow(col, row)">{{ value }}</a>
+     </ng-container>
+     <ng-template #normalCell>
+       {{ value }}
+     </ng-template>
+   </ng-template>
+ </ngx-datatable-column>
+
+</ngx-datatable>

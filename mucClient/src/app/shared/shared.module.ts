@@ -1,18 +1,24 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { TopNavigationComponent } from './components/top-navigation/top-navigation.component';
+import { DataTableComponent } from './components/data-table/data-table.component';
 
 
 
 @NgModule({
   declarations: [
-    TopNavigationComponent
+    TopNavigationComponent,
+    DataTableComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    NgxDatatableModule
   ],
   exports: [
-    TopNavigationComponent
+    TopNavigationComponent,
+    DataTableComponent,
+    NgxDatatableModule
   ]
 })
 export class SharedModule { }

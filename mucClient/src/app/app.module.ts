@@ -21,7 +21,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     NgSelectModule,
     NgxDatatableModule
   ],
-  providers: [CookieService, NgSelectModule, NgxDatatableModule],
+  providers: [CookieService, NgSelectModule, NgxDatatableModule, SharedModule],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

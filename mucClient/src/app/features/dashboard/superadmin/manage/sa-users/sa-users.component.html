@@ -1,14 +1,18 @@
-<p>sa-users works!</p>
-<ngx-datatable
-  class="bootstrap"
-  [rows]="rowsData"
-  [columns]="columnDefs"
-  [headerHeight]="50"
-  [footerHeight]="50"
-  [count]="page.count"
-  [offset]="page.offset"
-  [limit]="page.limit"
-  [externalPaging]="true"
-  [externalSorting]="true"
-  >
-</ngx-datatable>
+<div class="row">
+  <div class="col-12">
+    <app-data-table
+      [mucRowsData]="rowsData"
+      [mucColumnDefs]="columnDefs"
+      [mucSelected]="selected"
+      [mucPageSize]="page.limit"
+      [mucCount]="page.count"
+      [mucOffset]="page.offset"
+      (mucOnSelect)="onSelect($event)"
+      (mucOnClickAbleRow)="onClickAbleRow($event)"
+    >
+    </app-data-table>
+  </div>
+  <div class="col-12" *ngIf="isVisibleUserDetails">
+    Hello
+  </div>
+</div>

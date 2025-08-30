@@ -1,31 +1,31 @@
-<div class="d-flex" style="min-height: 100vh; gap: 20px;">
+<div class="d-flex" style="gap: 20px;">
 
   <!-- Sidebar -->
   <div class="flex-shrink-0 bg-white text-dark p-4 border shadow-sm rounded" style="width: 20%;">
-    <h2 class="mb-4">Manage</h2>
+    <h4 class="fw-light">Manage</h4>
+    <hr>
     <ul class="nav flex-column" id="sidebarMenu">
       <li class="nav-item mb-2">
         <button
-          class="btn w-100 text-start sidebar_button"
+          class="btn w-100 text-start sidebar_button fw-light"
           [ngClass]="active_tab === 'users' ? 'active' : ''"
           (click)="loadContent('users')"
-        ><i class="fa fa-users" aria-hidden="true"></i>
-        Users</button>
+        >Users</button>
       </li>
       <li class="nav-item mb-2">
         <button
-          class="btn w-100 text-start sidebar_button"
+          class="btn w-100 text-start sidebar_button fw-light"
           [ngClass]="active_tab === 'distribution' ? 'active' : ''"
           (click)="loadContent('distribution')"
-        ><i class="fa fa-slack" aria-hidden="true"></i>
-        Distribution</button>
+        >Distribution</button>
       </li>
     </ul>
   </div>
 
   <!-- Main Content -->
   <div class="flex-grow-1 bg-white p-4 border shadow-sm rounded">
-    <h2 id="content-title" class="mb-3">Manage Dashboard</h2>
+    <h4 id="content-title" class="fw-light">Manage Dashboard</h4>
+    <hr>
     <router-outlet></router-outlet>
   </div>
 

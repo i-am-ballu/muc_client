@@ -170,3 +170,44 @@ body, html {
     background-position: unset; /* Reset position */
     background-size: unset; /* Reset size */
 }
+
+/* Make ngx-datatable look like bootstrap table */
+
+/* Make each cell look like Excel grid */
+.ngx-datatable .datatable-header-cell {
+  border: 1px solid #bfbfbf;
+  background-color: #f3f3f3;
+  font-weight: bold;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.ngx-datatable .datatable-body-cell {
+  border-right: 1px solid #dcdcdc; /* only right border */
+  border-bottom: 1px solid #dcdcdc; /* only bottom border */
+  padding: 4px 8px;
+}
+
+.ngx-datatable .datatable-body-cell .datatable-body-cell-label .datatable-checkbox {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.ngx-datatable .datatable-body-cell .datatable-body-cell-label .datatable-link {
+  color: var(--primary-color);
+  text-decoration:none;
+}
+
+.ngx-datatable .datatable-body-row:first-child .datatable-body-cell {
+  border-top: 1px solid #dcdcdc;
+}
+
+.ngx-datatable .datatable-body-row .datatable-body-cell:first-child {
+  border-left: 1px solid #dcdcdc;
+}
+
+.ngx-datatable .datatable-body-row .datatable-body-cell:last-child {
+  border-right: 1px solid #dcdcdc;
+}

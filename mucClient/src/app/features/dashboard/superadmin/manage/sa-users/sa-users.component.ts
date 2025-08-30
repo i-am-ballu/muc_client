@@ -9,28 +9,44 @@ import { LoginService } from "src/app/features/services/login.service";
 export class SaUsersComponent implements OnInit {
 
 
-  public columnDefs = [
-    { prop: 'user_id', name: 'User ID' },
-    { prop: 'company_id', name: 'Company ID' },
-    { prop: 'first_name', name: 'First Name' },
-    { prop: 'last_name', name: 'Last Name' },
-    { prop: 'full_name', name: 'Full Name' },
-    { prop: 'email', name: 'Email' },
-  ];
-  public rowsData : any;
-  public totalRecords : number = 0;
+  public columnDefs : any[] = [];
+
+  public rowsData : any[] = [];
+
   public page : any = {
     limit: 10,     // rows per page
     count: 0,      // total records
     offset: 0      // current page index
   };
 
+  public selected : any[] = [];
+
+  public onSelect(selected){
+    this.selected = [...selected];
+  }
+
+  public isVisibleUserDetails : boolean = false;
+  public onClickAbleRow(value){
+    this.isVisibleUserDetails = true;
+    console.log(value)
+  }
+
   constructor(
     private loginService : LoginService,
   ) { }
 
   ngOnInit() {
+    this.columnDefs = this.processToCreateColumnDefs();
     this.getAllUsersBasedOnCompanyId();
+  }
+
+  public processToCreateColumnDefs(){
+    return [
+      { prop: 'full_name', name: 'User Name', clickable: true, },
+      { prop: 'first_name', name: 'First Name', clickable: false, },
+      { prop: 'last_name', name: 'Last Name', clickable: false, },
+      { prop: 'email', name: 'Email', clickable: false, },
+    ];
   }
 
   public getAllUsersBasedOnCompanyId(){
