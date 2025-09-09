@@ -43,4 +43,8 @@ export class LoginService {
   getUserDetailsBasedOnUserId(body){
     return this.http.get(this.baseUrl+"/water_logs/payment-status/", {params : body});
   }
+
+  upsertUserDetailsBasedOnUserId(body){
+    return this.http.post<any>(this.baseUrl+"/water_logs/upsert-log/", body);
+  }
 }

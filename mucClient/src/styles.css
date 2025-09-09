@@ -57,6 +57,23 @@ body, html {
   border-bottom: 1px solid var(--link_hover_color);
 }
 
+.btn-primary {
+  padding: .25rem 1.5rem;
+  font-size: 14px;
+  background-color: var(--link_button_color);
+  color: var(--button_text_color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid var(--link_button_color);
+}
+
+.btn-primary:hover {
+  background: var(--link_button_hover_color);
+  color: var(--button_text_color);
+  border-color: var(--link_button_hover_color);
+}
+
 .login-button {
   width: 100%;
   padding: 6px 0;
@@ -66,7 +83,7 @@ body, html {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  border: 1px solid var(--link_button_color);;
+  border: 1px solid var(--link_button_color);
 }
 
 .login-button:hover {

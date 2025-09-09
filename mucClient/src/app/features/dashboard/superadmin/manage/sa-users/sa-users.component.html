@@ -1,5 +1,8 @@
-<div class="row">
-  <div class="col-12">
+<!-- Outer container -->
+<div class="flex flex-col w-full gap-4">
+
+  <!-- Data Table -->
+  <div class="flex w-full">
     <app-data-table
       [mucRowsData]="rowsData"
       [mucColumnDefs]="columnDefs"
@@ -9,10 +12,60 @@
       [mucOffset]="page.offset"
       (mucOnSelect)="onSelect($event)"
       (mucOnClickAbleRow)="onClickAbleRow($event)"
+      class="flex-1"
     >
     </app-data-table>
   </div>
-  <div class="col-12" *ngIf="isVisibleUserDetails">
-    Hello
+
+  <div class="user-container" *ngIf="isVisibleUserDetails">
+    <div class="user-card" *ngFor="let user of user_details">
+      <!-- Header -->
+      <div class="user-header">
+        <div class="user-info gap-2">
+          <span>{{ user.user_name }}</span>
+          <span>|</span>
+          <span>{{ user.last_payment_date}}</span>
+        </div>
+        <button class="btn" [ngClass]="user.open ? 'btn-secondary' : 'btn-primary'" (click)="toggleRow(user)">
+          {{ user.open ? 'Close' : 'Edit' }}
+        </button>
+      </div>
+
+      <!-- Expanded Rows -->
+      <div class="rows-container" *ngIf="user && user.open">
+        <div class="row" *ngFor="let row of user.rows" [formGroup]="row.userLitersForm">
+          <div class="row-field">
+            <label class="w-28">Date</label>
+            <input
+              class="border px-2 py-1 rounded flex-1"
+              type="date"
+              formControlName="log_created_on"
+            />
+          </div>
+          <div class="row-field">
+            <label class="w-28">Liters</label>
+            <input
+              class="border px-2 py-1 rounded flex-1"
+              type="number"
+              formControlName="liters"
+            />
+          </div>
+          <div class="row-field">
+            <label class="w-28">Paid Amount</label>
+            <input
+              class="border px-2 py-1 rounded flex-1"
+              type="number"
+              formControlName="paid_amount"
+            />
+          </div>
+        </div>
+
+        <!-- Save / Cancel Buttons -->
+        <div class="d-flex justify-content-end gap-3 pt-3">
+          <button class="px-4 py-1 btn btn-primary" (click)="onClickSave(user)">Save</button>
+          <button class="px-4 py-1 btn btn-secondary" (click)="onClickCancel(user)">Cancel</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

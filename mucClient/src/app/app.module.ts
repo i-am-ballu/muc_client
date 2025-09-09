@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -21,7 +22,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     NgSelectModule,
     NgxDatatableModule
   ],
-  providers: [CookieService, NgSelectModule, NgxDatatableModule, SharedModule],
+  providers: [CookieService, NgSelectModule, NgxDatatableModule, SharedModule, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
