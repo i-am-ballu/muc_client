@@ -55,3 +55,7 @@
   flex-direction: column;
   flex: 1;
 }
+
+.is-invalid {
+  border-color: var(--bs-form-invalid-border-color);
+}
