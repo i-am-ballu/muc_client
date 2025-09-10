@@ -6,17 +6,39 @@ import { SaHomeComponent } from './superadmin/sa-home/sa-home.component';
 import { SaManageComponent } from './superadmin/manage/sa-manage/sa-manage.component';
 import { SaUsersComponent } from './superadmin/manage/sa-users/sa-users.component';
 import { SaDistributionComponent } from './superadmin/manage/sa-distribution/sa-distribution.component';
-
+import { AdHomeComponent } from './admin/ad-home/ad-home.component';
+import { AdManageComponent } from './admin/manage/ad-manage/ad-manage.component';
+import { AdUsersComponent } from './admin/manage/ad-users/ad-users.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'user_dashboard', pathMatch: 'full' },
   {
-    path: 'user_dashboard',
-    component: UserDashboardComponent,
+    path: 'ad_dashboard',
+    component: AdHomeComponent,
     canActivate: [AuthGuard],
     children: [
       // Example child routes (lazy load more modules here if needed)
       // { path: 'reports', loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule) },
+    ]
+  },
+  {
+    path: 'ad_manage',
+    component: AdManageComponent,
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        redirectTo: 'payment_details',
+        pathMatch: 'full'
+      },
+      {
+        path: 'payment_details',
+        component: AdUsersComponent,
+      },
+      // {
+      //   path: 'distribution',
+      //   component: SaDistributionComponent
+      // }
     ]
   },
   {

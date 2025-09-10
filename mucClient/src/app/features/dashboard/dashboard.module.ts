@@ -9,6 +9,9 @@ import { SaManageComponent } from './superadmin/manage/sa-manage/sa-manage.compo
 import { SaHomeComponent } from './superadmin/sa-home/sa-home.component';
 import { SaUsersComponent } from './superadmin/manage/sa-users/sa-users.component';
 import { SaDistributionComponent } from './superadmin/manage/sa-distribution/sa-distribution.component';
+import { AdHomeComponent } from './admin/ad-home/ad-home.component';
+import { AdManageComponent } from './admin/manage/ad-manage/ad-manage.component';
+import { AdUsersComponent } from './admin/manage/ad-users/ad-users.component';
 
 
 @NgModule({
@@ -17,7 +20,10 @@ import { SaDistributionComponent } from './superadmin/manage/sa-distribution/sa-
     SaManageComponent,
     SaHomeComponent,
     SaUsersComponent,
-    SaDistributionComponent
+    SaDistributionComponent,
+    AdHomeComponent,
+    AdManageComponent,
+    AdUsersComponent
   ],
   imports: [
     CommonModule,

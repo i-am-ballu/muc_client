@@ -8,16 +8,9 @@
       <li class="nav-item mb-2">
         <button
           class="btn w-100 text-start sidebar_button fw-light"
-          [ngClass]="active_tab === 'users' ? 'active' : ''"
-          (click)="loadContent('users')"
-        >Users</button>
-      </li>
-      <li class="nav-item mb-2">
-        <button
-          class="btn w-100 text-start sidebar_button fw-light"
-          [ngClass]="active_tab === 'distribution' ? 'active' : ''"
-          (click)="loadContent('distribution')"
-        >Distribution</button>
+          [ngClass]="active_tab === 'payment_details' ? 'active' : ''"
+          (click)="loadContent('payment_details')"
+        >Payment Details</button>
       </li>
     </ul>
   </div>

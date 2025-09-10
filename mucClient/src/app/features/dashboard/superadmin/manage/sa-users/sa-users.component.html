@@ -45,10 +45,10 @@
           <div class="row-field">
             <label class="w-28">Liters</label>
             <input
-              class=" px-2 py-1 rounded flex-1 form-control"
+              class=" px-2 py-1 rounded flex-1"
               type="number"
               formControlName="liters"
-              [ngClass]="(isSubmit && row.userLitersForm.get('liters')?.errors?.required) ? 'is-invalid' : 'border'"
+              [ngClass]="(isSubmit && row.userLitersForm.get('liters')?.errors?.required) ? 'form-control is-invalid' : 'border'"
             />
           </div>
           <div class="row-field">

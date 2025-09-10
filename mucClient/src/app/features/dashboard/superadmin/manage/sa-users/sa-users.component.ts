@@ -155,8 +155,6 @@ export class SaUsersComponent implements OnInit {
         console.log('error--------', err)
       }
     });
-
-    console.log('user ------- ', payload)
   }
 
 }

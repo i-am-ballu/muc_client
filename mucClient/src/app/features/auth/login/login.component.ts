@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
   ){
     if(this.authService.isLoggedIn()){
       let user_obj = this.authService.getUserInfo();
-      let dashboard_path = user_obj && user_obj.isSuperadmin ? '/dashboard/sa_dashboard' : '/dashboard/user_dashboard';
+      let dashboard_path = user_obj && user_obj.isSuperadmin ? '/dashboard/sa_dashboard' : '/dashboard/ad_dashboard';
       this.router.navigate([dashboard_path]);
     }
   }

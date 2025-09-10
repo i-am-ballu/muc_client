@@ -11,7 +11,7 @@ export class TopNavigationComponent implements OnInit {
 
   public isLoggedIn : boolean = false;
   public isSuperadmin : boolean = false;
-  
+
   constructor(
     private cookieService: CookieService,
     private router: Router,
@@ -29,8 +29,13 @@ export class TopNavigationComponent implements OnInit {
     return userInfo ? userInfo : {};
   }
 
-  public onClickNavigation(tab_name){
+  public onClickSuperAdminNavigation(tab_name){
     let dashboard_path = tab_name == 'Home' ? '/dashboard/sa_dashboard' : '/dashboard/sa_manage';
+    this.router.navigate([dashboard_path]);
+  }
+
+  public onClickAdminNavigation(tab_name){
+    let dashboard_path = tab_name == 'Home' ? '/dashboard/ad_dashboard' : '/dashboard/ad_manage';
     this.router.navigate([dashboard_path]);
   }
 
