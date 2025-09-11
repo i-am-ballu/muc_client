@@ -1,1 +1,46 @@
-<p>ad-users works!</p>
+<div class="container mt-4">
+  <form [formGroup]="usersForm" (ngSubmit)="onSubmit()">
+
+    <div formArrayName="users" class="d-flex flex-column gap-3">
+      <div
+        *ngFor="let user of users.controls; let i = index"
+        [formGroupName]="i"
+        class="d-flex flex-wrap align-items-center gap-3 p-3 border rounded"
+      >
+        <div class="d-flex flex-column flex-grow-1">
+          <label class="fw-bold mb-1">Date</label>
+          <input
+            class="border px-2 py-1 rounded flex-1"
+            type="date"
+            formControlName="log_created_on"
+          />
+        </div>
+
+        <div class="d-flex flex-column flex-grow-1">
+          <label class="fw-bold mb-1">Liters</label>
+          <input
+            class="border px-2 py-1 rounded flex-1"
+            type="number"
+            formControlName="liters"
+          />
+        </div>
+
+        <div class="d-flex flex-column flex-grow-1">
+          <label class="fw-bold mb-1">Paid Amount</label>
+          <input
+            class="border px-2 py-1 rounded flex-1"
+            type="number"
+            formControlName="paid_amount"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="d-flex gap-3 mt-4">
+      <button type="button" class="btn btn-secondary" (click)="addUser()">Add User</button>
+      <button type="submit" class="btn btn-primary">Submit All</button>
+      <button type="button" class="btn btn-warning text-white" (click)="onReset()">Reset</button>
+    </div>
+  </form>
+</div>

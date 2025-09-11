@@ -1,0 +1,25 @@
+.user-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.rows-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.row {
+  display: flex;
+  gap: 1rem;
+  border-top: 1px solid #eee;
+  padding-top: 0.5rem;
+}
+
+.row-field {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}

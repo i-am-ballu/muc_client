@@ -29,6 +29,7 @@ export class AuthService {
       last_name : userInfo.last_name,
       admin_id : userInfo.id ? userInfo.id : 0,
       token : userInfo.token,
+      company_id : userInfo.company_id ? userInfo.company_id : 0,
     }
     this.removeCookies();
     this.cookieService.set('user_info', '', -1, null, null, true, 'None');
