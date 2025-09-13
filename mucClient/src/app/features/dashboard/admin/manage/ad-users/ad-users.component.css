@@ -23,3 +23,8 @@
   flex-direction: column;
   flex: 1;
 }
+
+.flex-33 {
+  flex: 1 1 calc(33.333% - 1rem);
+  max-width: 33.333%;
+}

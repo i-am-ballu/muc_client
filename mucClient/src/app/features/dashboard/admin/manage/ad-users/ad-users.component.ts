@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
 import { LoginService } from "src/app/features/services/login.service";
 import * as _ from 'lodash';
@@ -61,17 +61,17 @@ export class AdUsersComponent implements OnInit {
     });
   }
 
-  public userForm: FormGroup;
+  public usersForm: FormGroup;
 
   public initializeUserForm(){
-    this.userForm = this.fb.group({
+    this.usersForm = this.fb.group({
       users: this.fb.array([])
     });
   }
 
   // Getter for users FormArray
   get users(): FormArray {
-    return this.userForm.get('users') as FormArray;
+    return this.usersForm.get('users') as FormArray;
   }
 
   // Create user form group
@@ -92,6 +92,14 @@ export class AdUsersComponent implements OnInit {
     userList.forEach(user => {
       this.users.push(this.createUser(user));
     });
+  }
+
+  public onClickPay(){
+    let body = {
+      company_id : this.company_id,
+      user_id : this.user_id,
+    }
+    console.log('this.users ------ ', this.users);
   }
 
 }
