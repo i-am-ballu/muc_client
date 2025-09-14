@@ -26,6 +26,15 @@
         </div>
 
         <div class="d-flex flex-column flex-33">
+          <label class="fw-bold mb-1">Water Cane</label>
+          <input
+            class="border px-2 py-1 rounded flex-1"
+            type="number"
+            formControlName="water_cane"
+          />
+        </div>
+
+        <div class="d-flex flex-column flex-33">
           <label class="fw-bold mb-1">Paid Amount</label>
           <input
             class="border px-2 py-1 rounded flex-1"
@@ -52,3 +61,12 @@
     </div>
   </form>
 </div>
+
+<app-reusable-modal *ngIf="isOpenConfirmation"
+  [mucModalOptions] = "modalOptions"
+  (mucSaveMethod) = "callMucSaveMethod($event)"
+  (mucCancelMethod) = "callMucCancelMethod($event)"
+  (mucCrossMethod) = "callMucCrossMethod($event)"
+>
+
+</app-reusable-modal>

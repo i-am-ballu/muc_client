@@ -1,0 +1,23 @@
+<div class="modal-overlay">
+  <div class="modal-container">
+
+    <!-- Modal Header -->
+    <div class="modal-header" *ngIf="modalOptions && modalOptions.header">
+      <h5 class="modal-title" *ngIf="modalOptions && modalOptions.headerText">{{ modalOptions.headerText }}</h5>
+      <button class="close-btn" (click)="onClickCrossButton('cross')" *ngIf="modalOptions && modalOptions.crossButton">&times;</button>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="modal-body" *ngIf="modalOptions && modalOptions.body">
+      <p>{{ modalOptions.bodyText }}</p>
+      <p *ngIf="modalOptions && modalOptions.bodyText && modalOptions.warning" class="warning">{{ modalOptions.warningText }}</p>
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="d-flex justify-content-end gap-3 pt-3 modal-footer" *ngIf="modalOptions && modalOptions.footer">
+      <button class="px-4 py-1 btn btn-secondary" (click)="onClickCancelButton(modalOptions.cancelButtonText)" *ngIf="modalOptions && modalOptions.cancelButtonText">{{ modalOptions.cancelButtonText }}</button>
+      <button class="px-4 py-1 btn btn-primary" (click)="onClickSaveButton(modalOptions.saveButtonText)" *ngIf="modalOptions && modalOptions.saveButtonText">{{ modalOptions.saveButtonText }}</button>
+    </div>
+
+  </div>
+</div>

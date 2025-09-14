@@ -1,0 +1,117 @@
+/* Full-screen overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+  padding: 10px;
+  box-sizing: border-box;
+
+  /* animation */
+  animation: fadeIn 0.3s ease forwards;
+}
+
+/* Modal box */
+.modal-container {
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  flex: 1;
+  max-width: 500px;
+
+  /* animation */
+  transform: translateY(-30px) scale(0.9);
+  opacity: 0;
+  animation: slideIn 0.35s ease forwards;
+}
+
+/* Header */
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #ddd;
+  flex-shrink: 0;
+}
+
+/* Body */
+.modal-body {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.warning {
+  color: #d9534f;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+/* Footer */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 12px 16px;
+  border-top: 1px solid #ddd;
+  flex-shrink: 0;
+}
+
+/* 📱 Mobile (up to 600px) */
+@media (max-width: 600px) {
+  .modal-container {
+    max-width: 100%;
+    border-radius: 8px;
+  }
+
+  .modal-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .modal-footer button {
+    width: 100%;
+  }
+}
+
+/* 💻 Tablets (600px - 1024px) */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .modal-container {
+    max-width: 80%;
+  }
+}
+
+/* 🖥️ Desktop (>1024px) */
+@media (min-width: 1025px) {
+  .modal-container {
+    max-width: 500px;
+  }
+}
+
+/* 🔥 Animations */
+@keyframes fadeIn {
+  from { background: rgba(0,0,0,0); }
+  to   { background: rgba(0,0,0,0.5); }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-30px) scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}

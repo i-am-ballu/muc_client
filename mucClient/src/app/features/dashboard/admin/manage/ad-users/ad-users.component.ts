@@ -94,12 +94,46 @@ export class AdUsersComponent implements OnInit {
     });
   }
 
+  public isOpenConfirmation : boolean = false;
+  public modalOptions : any = {};
+
   public onClickPay(){
+    let modalOptions = {
+      header : true,
+      headerText : "Pay ?",
+      crossButton : false,
+      body : true,
+      bodyText : "Confirmation",
+      warning : false,
+      warningText : "",
+      footer : true,
+      cancelButtonText : 'Cancel',
+      saveButtonText : 'Save'
+    }
+    this.modalOptions = modalOptions
+    this.isOpenConfirmation = true;
+  }
+
+  public callMucSaveMethod(value){
+    this.refreshRequiredVariables();
     let body = {
       company_id : this.company_id,
       user_id : this.user_id,
     }
     console.log('this.users ------ ', this.users);
+  }
+
+  public callMucCancelMethod(){
+    this.refreshRequiredVariables();
+  }
+
+  public callMucCrossMethod(){
+    this.refreshRequiredVariables();
+  }
+
+  public refreshRequiredVariables(){
+    this.isOpenConfirmation = false;
+    this.modalOptions = {}
   }
 
 }
