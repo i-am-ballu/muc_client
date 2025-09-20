@@ -30,7 +30,7 @@ export class AuthService {
       admin_id : userInfo.id ? userInfo.id : 0,
       token : userInfo.token,
       company_id : userInfo.company_id ? userInfo.company_id : 0,
-      water_department : userInfo.water_department ? userInfo.water_department :0,
+      water_department : userInfo.water_department ? userInfo.water_department : 0,
     }
     this.removeCookies();
     this.cookieService.set('user_info', '', -1, null, null, true, 'None');
