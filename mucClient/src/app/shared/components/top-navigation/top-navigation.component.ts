@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/core/auth/auth.service';
 
 @Component({
   selector: 'app-top-navigation',
@@ -15,6 +16,7 @@ export class TopNavigationComponent implements OnInit {
   constructor(
     private cookieService: CookieService,
     private router: Router,
+    private authService : AuthService,
   ) { }
 
   ngOnInit() {
@@ -37,6 +39,12 @@ export class TopNavigationComponent implements OnInit {
   public onClickAdminNavigation(tab_name){
     let dashboard_path = tab_name == 'Home' ? '/dashboard/ad_dashboard' : '/dashboard/ad_manage';
     this.router.navigate([dashboard_path]);
+  }
+
+  public onClickLogout(){
+    this.authService.removeCookies();
+    this.cookieService.set('user_info', '', -1, null, null, true, 'None');
+    this.router.navigate(['/auth/login']);
   }
 
 }

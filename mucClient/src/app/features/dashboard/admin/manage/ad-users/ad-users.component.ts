@@ -32,11 +32,13 @@ export class AdUsersComponent implements OnInit {
         if(res){
           this.company_id = res && res.company_id ? res.company_id : 0;
           this.user_id = res && res.admin_id ? res.admin_id : 0;
+          this.water_department = res && res.water_department ? true : false;
           this.getUserBasedOnUserId();
         }
     });
   }
 
+  public water_department : boolean = false;
   // Get user info
   public getUserInfo(callback: (error: any,result: any) => void){
     let userInfo = this.cookieService.check('user_info') ? JSON.parse(this.cookieService.get('user_info')) : {};
@@ -80,8 +82,14 @@ export class AdUsersComponent implements OnInit {
       water_id: [user && user.water_id ? user.water_id : 0, [Validators.required]],
       distribution_id: [user && user.distribution_id ? user.distribution_id : 0, [Validators.required]],
       user_name: [user && user.user_name ? user.user_name : '', [Validators.required]],
-      liters: [user && user.liters ? user.liters : '', [Validators.required]],
-      water_cane: [user && user.water_cane ? user.water_cane : '', [Validators.required]],
+      liters: [
+        user && user.liters ? user.liters : 0,
+        this.water_department ? [] : [Validators.required]
+      ],
+      water_cane: [
+        user && user.water_cane ? user.water_cane : 0,
+        this.water_department ? [Validators.required] : []
+      ],
       payment_status: [user && user.payment_status ? user.payment_status : '', [Validators.required]],
       paid_amount : [user && user.paid_amount ? user.paid_amount : 0, [Validators.required]],
     });

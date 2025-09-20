@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginService } from "src/app/features/services/login.service";
+import { CookieService } from 'ngx-cookie-service';
 import * as _ from 'lodash';
 
 @Component({
@@ -30,6 +31,7 @@ export class SaUsersComponent implements OnInit {
 
   public company_id : number = 0;
   public user_id : number = 0;
+  public water_department : boolean = false;
 
   public onClickAbleRow(value){
     let row_data = value && value.row ? value.row : {};
@@ -42,11 +44,22 @@ export class SaUsersComponent implements OnInit {
     private loginService : LoginService,
     private fb: FormBuilder,
     private datePipe: DatePipe,
+    private cookieService: CookieService,
   ) { }
 
   ngOnInit() {
     this.columnDefs = this.processToCreateColumnDefs();
-    this.getAllUsersBasedOnCompanyId();
+    this.getUserInfo((error,res) => {
+      if(res){
+        this.water_department = res && res.water_department ? true : false;
+        this.getAllUsersBasedOnCompanyId();
+      }
+    });
+  }
+
+  public getUserInfo(callback: (error: any,result: any) => void){
+    let userInfo = this.cookieService.check('user_info') ? JSON.parse(this.cookieService.get('user_info')) : {};
+    callback(null,userInfo ? userInfo : {})
   }
 
   public processToCreateColumnDefs(){
@@ -106,7 +119,14 @@ export class SaUsersComponent implements OnInit {
           company_id: [row.company_id],
           user_id: [row.user_id],
           water_id: [row.water_id],
-          liters: [row.liters, Validators.required],
+          liters: [
+            row && row.liters ? row.liters : 0,
+            this.water_department ? [] : [Validators.required]
+          ],
+          water_cane: [
+            row && row.water_cane ? row.water_cane : 0,
+            this.water_department ? [Validators.required] : []
+          ],
           paid_amount:[{ value: row.paid_amount, disabled: true }],
           log_created_on:[{ value: log_created_on, disabled: true }]
         });
@@ -138,13 +158,19 @@ export class SaUsersComponent implements OnInit {
       return;
     }
 
-    let body = _.map(userLitersForm, form => ({
+    let users_details = _.map(userLitersForm, form => ({
       company_id: form && form.get('company_id') && form.get('company_id').value ? form.get('company_id').value : 0,
       user_id: form && form.get('user_id') && form.get('user_id').value ? form.get('user_id').value : 0,
       water_id: form && form.get('water_id') && form.get('water_id').value ? form.get('water_id').value : 0,
       liters: form && form.get('liters') && form.get('liters').value ? form.get('liters').value : 0,
+      water_cane: form && form.get('water_cane') && form.get('water_cane').value ? form.get('water_cane').value : 0,
       paid_amount: form && form.get('paid_amount') && form.get('paid_amount').value ? form.get('paid_amount').value : 0,
     }));
+
+    let body = {
+      company_id : this.company_id,
+      users_details : users_details,
+    }
 
     this.loginService.upsertUserDetailsBasedOnUserId(body).subscribe({
       next: (res: any) => {

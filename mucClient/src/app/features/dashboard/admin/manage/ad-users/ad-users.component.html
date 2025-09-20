@@ -16,7 +16,7 @@
           />
         </div>
 
-        <div class="d-flex flex-column flex-33">
+        <div class="d-flex flex-column flex-33" *ngIf="!water_department">
           <label class="fw-bold mb-1">Liters</label>
           <input
             class="border px-2 py-1 rounded flex-1"
@@ -25,7 +25,7 @@
           />
         </div>
 
-        <div class="d-flex flex-column flex-33">
+        <div class="d-flex flex-column flex-33" *ngIf="water_department">
           <label class="fw-bold mb-1">Water Cane</label>
           <input
             class="border px-2 py-1 rounded flex-1"

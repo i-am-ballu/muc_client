@@ -1,24 +1,27 @@
-<p>top-navigation works!</p>
-
 <div class="top-navigation-container">
 	<div class="nav-element-start">
 		<img aria-hidden="true" alt="" width="60" height="30" loading="lazy" fetchpriority="auto" ng-img="true" src="assets/logo.svg">
-	</div>
 
-	<div class="nav-element-center" *ngIf="isSuperadmin && isLoggedIn">
-		<button *ngIf="isLoggedIn" type="button" class="home-btn" (click)="onClickSuperAdminNavigation('Home')">
-      <i class="fa fa-home"></i> Home
-    </button>
-		<button *ngIf="isLoggedIn" type="button" class="home-btn" (click)="onClickSuperAdminNavigation('Manage')">
-      <i class="fa fa-home"></i> Manage
-    </button>
+		<div class="nav-element-center" *ngIf="isSuperadmin && isLoggedIn">
+			<button *ngIf="isLoggedIn" type="button" class="home-btn" (click)="onClickSuperAdminNavigation('Home')">
+	      <i class="fa fa-home"></i> Home
+	    </button>
+			<button *ngIf="isLoggedIn" type="button" class="home-btn" (click)="onClickSuperAdminNavigation('Manage')">
+	      <i class="fa fa-home"></i> Manage
+	    </button>
+		</div>
+		<div class="nav-element-center" *ngIf="!isSuperadmin && isLoggedIn">
+			<button *ngIf="isLoggedIn" type="button" class="home-btn" (click)="onClickAdminNavigation('Home')">
+				<i class="fa fa-home"></i> Home
+			</button>
+			<button *ngIf="isLoggedIn" type="button" class="home-btn" (click)="onClickAdminNavigation('Manage')">
+				<i class="fa fa-home"></i> Manage
+			</button>
+		</div>
 	</div>
-	<div class="nav-element-center" *ngIf="!isSuperadmin && isLoggedIn">
-		<button *ngIf="isLoggedIn" type="button" class="home-btn" (click)="onClickAdminNavigation('Home')">
-			<i class="fa fa-home"></i> Home
-		</button>
-		<button *ngIf="isLoggedIn" type="button" class="home-btn" (click)="onClickAdminNavigation('Manage')">
-			<i class="fa fa-home"></i> Manage
+	<div class="nav-element-end">
+		<button *ngIf="isLoggedIn" type="button" class="home-btn" (click)="onClickLogout()">
+			<i class="fa fa-home"></i> Logout
 		</button>
 	</div>
 </div>

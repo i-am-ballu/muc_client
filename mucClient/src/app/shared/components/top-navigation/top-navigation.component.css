@@ -10,6 +10,12 @@
   gap: 8px;
 }
 
+.nav-element-end {
+  display: flex;
+  align-items: end;
+  gap: 8px;
+}
+
 .home-btn {
   display: flex;
   align-items: center;

@@ -42,13 +42,22 @@
               formControlName="log_created_on"
             />
           </div>
-          <div class="row-field">
+          <div class="row-field" *ngIf="!water_department">
             <label class="w-28">Liters</label>
             <input
               class=" px-2 py-1 rounded flex-1"
               type="number"
               formControlName="liters"
               [ngClass]="(isSubmit && row.userLitersForm.get('liters')?.errors?.required) ? 'form-control is-invalid' : 'border'"
+            />
+          </div>
+          <div class="row-field" *ngIf="water_department">
+            <label class="w-28">Cane</label>
+            <input
+              class=" px-2 py-1 rounded flex-1"
+              type="number"
+              formControlName="water_cane"
+              [ngClass]="(isSubmit && row.userLitersForm.get('water_cane')?.errors?.required) ? 'form-control is-invalid' : 'border'"
             />
           </div>
           <div class="row-field">
