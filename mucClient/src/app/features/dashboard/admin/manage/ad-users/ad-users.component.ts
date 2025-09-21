@@ -102,33 +102,59 @@ export class AdUsersComponent implements OnInit {
     });
   }
 
+  public
   public isOpenConfirmation : boolean = false;
   public modalOptions : any = {};
 
   public onClickPay(){
-    let modalOptions = {
-      header : true,
-      headerText : "Pay ?",
-      crossButton : false,
-      body : true,
-      bodyText : "Confirmation",
-      warning : false,
-      warningText : "",
-      footer : true,
-      cancelButtonText : 'Cancel',
-      saveButtonText : 'Save'
-    }
-    this.modalOptions = modalOptions
-    this.isOpenConfirmation = true;
+    this.getPendingPayments((error,res) => {
+      if(res){
+        let modalOptions = {
+          header : true,
+          headerText : "Confirmation Pay ?",
+          crossButton : false,
+          body : true,
+          bodyText : this.total_pending_amount,
+          warning : false,
+          warningText : "",
+          footer : true,
+          cancelButtonText : 'Cancel',
+          saveButtonText : 'Save'
+        }
+        this.modalOptions = modalOptions
+        this.isOpenConfirmation = true;
+      }else{
+        console.log('error -------- ', error);
+      }
+    });
   }
 
-  public callMucSaveMethod(value){
-    this.refreshRequiredVariables();
+  public total_pending_amount : number = 0;
+  public getPendingPayments(callback: (error: any,result: any) => void){
     let body = {
       company_id : this.company_id,
       user_id : this.user_id,
     }
-    console.log('this.users ------ ', this.users);
+    this.loginService.getPendingPayments(body).subscribe({
+      next: (res: any) => {
+        this.total_pending_amount = res && res.data && res.data.total_pending_amount ? res.data.total_pending_amount : 0;
+        callback(null, res);
+      },
+      error: err => {
+        callback(err, null);
+      }
+    });
+  }
+
+  public callMucSaveMethod(value){
+    if(+this.total_pending_amount){
+      this.refreshRequiredVariables();
+      let body = {
+        company_id : this.company_id,
+        user_id : this.user_id,
+      }
+      console.log('this.users ------ ', this.users);
+    }
   }
 
   public callMucCancelMethod(){
