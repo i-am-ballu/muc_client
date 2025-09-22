@@ -4,7 +4,7 @@
 let http_url = 'http://localhost:8000';
 export const environment = {
   production: false,
-  apiBaseUrl : http_url+'/api'
+  apiBaseUrl : http_url+'/api',
 };
 
 /*
