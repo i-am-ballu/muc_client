@@ -52,4 +52,8 @@ export class LoginService {
   getPendingPayments(body){
     return this.http.get(this.baseUrl+"/water_logs/get_pending_payments/", {params : body});
   }
+
+  upsertPendingPayment(body){
+    return this.http.post<any>(this.baseUrl+"/water_logs/insert_payments/", body);
+  }
 }
