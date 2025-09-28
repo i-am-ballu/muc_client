@@ -48,6 +48,16 @@ export class LoginService {
     return this.http.post<any>(this.baseUrl+"/water_logs/upsert-log/", body);
   }
 
+  // start for sa-home
+
+  getSupportDetailsBasedOnCompany(body){
+    return this.http.get(this.baseUrl+"/activity_stream/getSupportDetailsBasedOnCompany/", {params : body});
+  }
+
+  getActivityStreamBasedOnCompany(body){
+    return this.http.get(this.baseUrl+"/activity_stream/getActivityStreamBasedOnCompany/", {params : body});
+  }
+
   // start for sa-user Component
   getPendingPayments(body){
     return this.http.get(this.baseUrl+"/water_logs/get_pending_payments/", {params : body});

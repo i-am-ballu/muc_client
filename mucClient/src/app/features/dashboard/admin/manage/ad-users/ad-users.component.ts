@@ -141,7 +141,7 @@ export class AdUsersComponent implements OnInit {
     });
   }
 
-  public total_pending_amount : number = 0;
+  public total_pending_amount : any = 0;
   public getPendingPayments(callback: (error: any,result: any) => void){
     let body = {
       company_id : this.company_id,
@@ -182,7 +182,7 @@ export class AdUsersComponent implements OnInit {
               }
             });
           }else{
-            console.log(err);
+            console.log(Error);
           }
         },
         error: err => {

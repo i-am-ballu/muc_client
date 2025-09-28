@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
+import { LoginService } from "src/app/features/services/login.service";
 
 @Component({
   selector: 'app-sa-home',
@@ -7,33 +9,97 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SaHomeComponent implements OnInit {
 
-  constructor() { }
+  public company_id : number = 0;
+  public water_department : boolean = false;
+
+  constructor(
+    private cookieService: CookieService,
+    private loginService : LoginService,
+  ) { }
 
   public supportBoxsDetails : any;
-  public scrollable_list : any;
+
 
   ngOnInit() {
-    this.supportBoxsDetails = this.getSupportBoxsDetail();
-    this.scrollable_list = this.getScrollableListDetail();
+    this.getUserInfo((error,res) => {
+      if(res){
+        this.company_id = res && res.admin_id ? res.admin_id : 0;
+        this.water_department = res && res.water_department ? true : false;
+        this.getSupportDetailsBasedOnCompany((error,res1) => {
+          if(res1){
+            this.getActivityStreamBasedOnCompany((error,res2) => {
+              if(res2){
+                this.supportBoxsDetails = this.getSupportBoxsDetail();
+              }
+            });
+          }
+        });
+      }
+    });
+  }
+
+  public getUserInfo(callback: (error: any,result: any) => void){
+    let userInfo = this.cookieService.check('user_info') ? JSON.parse(this.cookieService.get('user_info')) : {};
+    callback(null,userInfo ? userInfo : {})
+  }
+
+  public admin_count_list : any;
+  public collection_count_list : any;
+  public water_taken_count_list : any;
+  public getSupportDetailsBasedOnCompany(callback: (error: any,result: any) => void){
+    let body = {
+      company_id : this.company_id,
+    }
+    this.loginService.getSupportDetailsBasedOnCompany(body).subscribe({
+      next: (res: any) => {
+        if(res.status){
+          this.admin_count_list = res && res.data && res.data.admin_count_list && res.data.admin_count_list.length ? res.data.admin_count_list : [];
+          this.collection_count_list = res && res.data && res.data.collection_count_list && res.data.collection_count_list.length ? res.data.collection_count_list : [];
+          this.water_taken_count_list = res && res.data && res.data.water_taken_count_list && res.data.water_taken_count_list.length ? res.data.water_taken_count_list : [];
+          callback(null, res);
+        }else{
+          callback(Error, null);
+        }
+      },
+      error: err => {
+        callback(err, null);
+      }
+    });
+  }
+
+  public activityStreamScrollableList : any;
+  public getActivityStreamBasedOnCompany(callback: (error: any,result: any) => void){
+    let body = {
+      company_id : this.company_id,
+    }
+    this.loginService.getActivityStreamBasedOnCompany(body).subscribe({
+      next: (res: any) => {
+        if(res.status){
+          this.activityStreamScrollableList = res && res.data && res.data.length ? res.data : [];
+          callback(null, res);
+        }else{
+          callback(Error, null);
+        }
+      },
+      error: err => {
+        callback(err, null);
+      }
+    });
   }
 
   public getSupportBoxsDetail(){
+    let total_wc = this.water_taken_count_list && this.water_taken_count_list.length ? this.water_taken_count_list[0].total_water_cane : 0;
+    let total_wu = this.water_taken_count_list && this.water_taken_count_list.length ? this.water_taken_count_list[0].total_water_users : 0;
+    let total_cu_count = this.collection_count_list && this.collection_count_list.length ? this.collection_count_list[0].total_cu_count : 0;
+    let total_cru_count = this.collection_count_list && this.collection_count_list.length ? this.collection_count_list[0].total_cru_count : 0;
+    let total_adc = this.admin_count_list && this.admin_count_list.length ? this.admin_count_list[0].total_users : 0;
+    let dis_key = this.water_department ? 'Cane' : 'Liters'
+
     return [
-      {bt_detail : 'Users', bm_detail : 20, bbr_detail : '20 hello'},
-      {bt_detail : 'Collection', bm_detail : 30, bbr_detail : '5 pending'},
-      {bt_detail : 'Distribution', bm_detail : "40 person", bbr_detail : '2 remaning'},
+      {bt_detail : 'Active Users', bm_detail : total_adc},
+      {bt_detail : 'Collection', bm_detail : total_cu_count + ' Users', bbr_detail : total_cru_count + ' Pending Users'},
+      {bt_detail : dis_key + ' Taken', bm_detail : total_wc, bbr_detail : 'Total '+ total_wu + ' Users'},
       {bt_detail : 'Complain', bm_detail : 30, bbr_detail : '20 Resolve'}
     ]
   }
-
-  public getScrollableListDetail(){
-    return [
-      {ac_id : 0, ac_name : 'Lanzone', ac_request_type : 'Request For Payment', ac_des : 'Payment done but not clear in app', ac_created_date : '2 Day Ago'},
-      {ac_id : 1, ac_name : 'Balram Patidar', ac_request_type : 'Request For Bill', ac_des : 'Please Generate My Bill', ac_created_date : '4 Day Ago'},
-      {ac_id : 1, ac_name : 'Anthony Porcacro', ac_request_type : 'Request For Check', ac_des : 'Please Recheck payment done already', ac_created_date : '5 Day Ago'},
-      {ac_id : 1, ac_name : 'Paul', ac_request_type : 'Request For Bill', ac_des : 'Bill Generate My Bill', ac_created_date : '2 Day Ago'},
-      {ac_id : 1, ac_name : 'Deepak Patidar', ac_request_type : 'Request For Bill', ac_des : 'Bill Generate My Bill', ac_created_date : '2 Day Ago'},
-    ]
-  }
-
 }
