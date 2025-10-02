@@ -29,14 +29,14 @@
           <h3 class="mb-0">Activity Stream</h3>
         </div>
         <div class="flex-fill overflow-auto d-flex flex-column">
-          <div class="py-2 border-bottom px-3 d-flex align-items-start support_active_stream" *ngFor="let s_item of scrollable_list">
+          <div class="py-2 border-bottom px-3 d-flex align-items-start support_active_stream" *ngFor="let s_item of activityStreamScrollableList">
             <div class="small-box me-2 border support_active_stream_small_box d-flex align-items-center justify-content-center">
-              <p class="mb-0 support_active_stream_small_box_text">{{s_item.ac_request_type}}</p>
+              <p class="mb-0 support_active_stream_small_box_text">{{s_item.payment_status}}</p>
             </div>
             <div class="d-flex flex-column flex-fill support_active_stream_big_box">
-              <h6 class="mb-1 support_heading">{{s_item.ac_name}}</h6>
-              <p class="mb-1">{{s_item.ac_des}}</p>
-              <span class="mb-2 support_active_stream_span_color">{{s_item.ac_created_date}}</span>
+              <h6 class="mb-1 support_heading">{{s_item.user_fn}} | {{s_item.user_email}}</h6>
+              <p class="mb-1">Paid Payment {{s_item.total_payment}}</p>
+              <span class="mb-2 support_active_stream_span_color">Last Paid {{s_item.payment_month}} | {{s_item.payment_db_days}} Day Ago</span>
             </div>
           </div>
         </div>

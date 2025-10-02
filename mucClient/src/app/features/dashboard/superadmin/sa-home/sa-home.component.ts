@@ -25,9 +25,9 @@ export class SaHomeComponent implements OnInit {
       if(res){
         this.company_id = res && res.admin_id ? res.admin_id : 0;
         this.water_department = res && res.water_department ? true : false;
-        this.getSupportDetailsBasedOnCompany((error,res1) => {
+        this.getSuperAdminSupportDetailsBasedOnCompany((error,res1) => {
           if(res1){
-            this.getActivityStreamBasedOnCompany((error,res2) => {
+            this.getSuperAdminActivityStreamBasedOnCompany((error,res2) => {
               if(res2){
                 this.supportBoxsDetails = this.getSupportBoxsDetail();
               }
@@ -46,11 +46,11 @@ export class SaHomeComponent implements OnInit {
   public admin_count_list : any;
   public collection_count_list : any;
   public water_taken_count_list : any;
-  public getSupportDetailsBasedOnCompany(callback: (error: any,result: any) => void){
+  public getSuperAdminSupportDetailsBasedOnCompany(callback: (error: any,result: any) => void){
     let body = {
       company_id : this.company_id,
     }
-    this.loginService.getSupportDetailsBasedOnCompany(body).subscribe({
+    this.loginService.getSuperAdminSupportDetailsBasedOnCompany(body).subscribe({
       next: (res: any) => {
         if(res.status){
           this.admin_count_list = res && res.data && res.data.admin_count_list && res.data.admin_count_list.length ? res.data.admin_count_list : [];
@@ -68,11 +68,11 @@ export class SaHomeComponent implements OnInit {
   }
 
   public activityStreamScrollableList : any;
-  public getActivityStreamBasedOnCompany(callback: (error: any,result: any) => void){
+  public getSuperAdminActivityStreamBasedOnCompany(callback: (error: any,result: any) => void){
     let body = {
       company_id : this.company_id,
     }
-    this.loginService.getActivityStreamBasedOnCompany(body).subscribe({
+    this.loginService.getSuperAdminActivityStreamBasedOnCompany(body).subscribe({
       next: (res: any) => {
         if(res.status){
           this.activityStreamScrollableList = res && res.data && res.data.length ? res.data : [];

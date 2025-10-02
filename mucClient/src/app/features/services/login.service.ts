@@ -50,12 +50,12 @@ export class LoginService {
 
   // start for sa-home
 
-  getSupportDetailsBasedOnCompany(body){
-    return this.http.get(this.baseUrl+"/activity_stream/getSupportDetailsBasedOnCompany/", {params : body});
+  getSuperAdminSupportDetailsBasedOnCompany(body){
+    return this.http.get(this.baseUrl+"/activity_stream/getSuperAdminSupportDetailsBasedOnCompany/", {params : body});
   }
 
-  getActivityStreamBasedOnCompany(body){
-    return this.http.get(this.baseUrl+"/activity_stream/getActivityStreamBasedOnCompany/", {params : body});
+  getSuperAdminActivityStreamBasedOnCompany(body){
+    return this.http.get(this.baseUrl+"/activity_stream/getSuperAdminActivityStreamBasedOnCompany/", {params : body});
   }
 
   // start for sa-user Component
@@ -65,5 +65,19 @@ export class LoginService {
 
   upsertPendingPayment(body){
     return this.http.post<any>(this.baseUrl+"/water_logs/insert_payments/", body);
+  }
+
+  // start for sa-distribution
+  getInsightsWaterPayment(body){
+    return this.http.get(this.baseUrl+"/activity_stream/getInsightsWaterPayment/", {params : body});
+  }
+
+  // start for ad-home
+  getAdminSupportDetailsBasedOnCompany(body){
+    return this.http.get(this.baseUrl+"/activity_stream/getAdminSupportDetailsBasedOnCompany/", {params : body});
+  }
+
+  getAdminActivityStreamBasedOnCompany(body){
+    return this.http.get(this.baseUrl+"/activity_stream/getAdminActivityStreamBasedOnCompany/", {params : body});
   }
 }
