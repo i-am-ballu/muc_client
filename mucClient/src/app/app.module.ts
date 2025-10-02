@@ -20,7 +20,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     AppRoutingModule,
     SharedModule,
     NgSelectModule,
-    NgxDatatableModule
+    NgxDatatableModule,
   ],
   providers: [CookieService, NgSelectModule, NgxDatatableModule, SharedModule, DatePipe],
   bootstrap: [AppComponent]

@@ -3,6 +3,10 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
 
+import { PlotlyModule } from 'angular-plotly.js';
+import * as PlotlyJS from 'plotly.js-dist-min';
+PlotlyModule.plotlyjs = PlotlyJS;
+
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 import { SaManageComponent } from './superadmin/manage/sa-manage/sa-manage.component';
@@ -29,7 +33,8 @@ import { AdUsersComponent } from './admin/manage/ad-users/ad-users.component';
     CommonModule,
     ReactiveFormsModule,
     DashboardRoutingModule,
-    SharedModule
+    SharedModule,
+    PlotlyModule
   ]
 })
 export class DashboardModule { }

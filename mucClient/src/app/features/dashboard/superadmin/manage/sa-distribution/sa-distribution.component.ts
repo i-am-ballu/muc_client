@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { PlotlyModule } from 'angular-plotly.js';
 import { CookieService } from 'ngx-cookie-service';
 import { LoginService } from "src/app/features/services/login.service";
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-sa-distribution',
@@ -19,7 +21,10 @@ export class SaDistributionComponent implements OnInit {
   public company_id : number = 0;
   public water_department : boolean = false;
 
-  ngOnInit() {
+  async ngOnInit() {
+    const Plotly = await import('plotly.js-dist-min');
+    PlotlyModule.plotlyjs = Plotly;
+
     this.getUserInfo((error,res) => {
       if(res){
         this.company_id = res && res.admin_id ? res.admin_id : 0;
@@ -60,44 +65,96 @@ export class SaDistributionComponent implements OnInit {
   }
 
   public insightsGraphyDetails : any;
-  public processToCreateInsightGraphy(){
-    if(this.insightsWaterDetails && this.insightsWaterDetails.length){
-      const labels = [];
-      const parents = [];
-      const values = [];
-      const colors = [];
 
-      this.insightsWaterDetails.forEach(row => {
-        let water_log_c_date = row && row.water_log_c_date ? row.water_log_c_date : new Date();
-        water_log_c_date = this.datePipe.transform(water_log_c_date, 'yyyy-MM-dd');
-        const userLabel = `${row.user_name} (ID: ${row.user_id})`;
-        if (!labels.includes(userLabel)) {
-          labels.push(userLabel);
-          parents.push('');
-          values.push(0);
-          colors.push('lightblue'); // user node color
-        }
+  public processToCreateInsightGraphy() {
+    if (!this.insightsWaterDetails || !this.insightsWaterDetails.length) return;
 
-        const waterLabel = `${water_log_c_date} | Cane: ${row.water_cane} | Paid: ${row.paid_amount} | Remaining: ${row.remaining_amount}`;
-        labels.push(waterLabel);
-        parents.push(userLabel);
-        values.push(row.remaining_amount); // Or row.paid_amount
-        colors.push(row.payment_status === 'Paid' ? 'green' : 'red');
-      });
+    const labels: string[] = [];
+    const parents: string[] = [];
+    const values: (number | null)[] = [];
+    const ids: string[] = [];
+    const customdata: any[] = [];
+    const hovertemplates: any[] = [];
 
-      this.insightsGraphyDetails = {
-        data: [{
-          type: "sunburst",
-          labels: labels,
-          parents: parents,
-          values: values,
-          marker: { colors: colors },
-          branchvalues: 'total'
-        }],
-        layout: { margin: { l: 0, r: 0, t: 30, b: 0 }, title: 'Water Payment Sunburst' }
-      };
-      console.log(this.insightsGraphyDetails)
-    }
+    // 1. Track which users are already added
+    const addedUsers = new Map<string, { paid: number; remaining: number, logs: number }>();
+
+    // 2. Single loop over data
+    this.insightsWaterDetails.forEach(row => {
+      let logs_count = 1;
+      const userLabel = `${row.user_name}`;
+      const waterCaneLabel = `Cane: ${row.water_cane}`
+
+      // Add user node if not already added
+      if (!addedUsers.has(userLabel)) {
+        labels.push(userLabel);
+        parents.push('All Users');
+        values.push(0); // sum of children
+        ids.push(`user-${row.user_id}`);
+        addedUsers.set(userLabel, { paid: 0, remaining: 0, logs: 0 });
+        customdata.push([0, 0, 0]);
+        hovertemplates.push(
+          '%{label}<br>Paid: %{customdata[0]}<br>Remaining: %{customdata[1]}<br>Logs: %{customdata[2]}<extra></extra>'
+        );
+      }
+
+      const userData = addedUsers.get(userLabel)!;
+
+      // Add water log node (always, even if water_cane = 0)
+      const waterDate = row.water_log_c_date
+        ? this.datePipe.transform(new Date(row.water_log_c_date), 'yyyy-MM-dd')
+        : 'No Date';
+
+      labels.push(waterCaneLabel);
+      parents.push(`user-${row.user_id}`);
+
+      const waterValue = Number(row.paid_amount) + Number(row.remaining_amount) || 1;
+      values.push(waterValue);
+      ids.push(`user-${row.user_id}-${row.water_id}`);
+
+      customdata.push([row.paid_amount, row.remaining_amount, logs_count]);
+      hovertemplates.push(
+        '%{label}<br>Paid: %{customdata[0]}<br>Remaining: %{customdata[1]}<extra></extra>'
+      );
+
+      // Update user totals
+      userData.paid += Number(row.paid_amount);
+      userData.remaining += Number(row.remaining_amount);
+      userData.logs += Number(logs_count);
+    });
+
+    // 3. Update user nodes hover with totals
+    addedUsers.forEach((userData, userLabel) => {
+      const userIndex = labels.indexOf(userLabel);
+      if (userIndex !== -1) {
+        customdata[userIndex] = [userData.paid, userData.remaining, userData.logs];
+      }
+    });
+
+    const data = [{
+      type: "sunburst",
+      labels: labels,
+      parents: parents,
+      ids: ids,
+      values:  values,
+      outsidetextfont: {size: 20, color: "#377eb8"},
+      leaf: {opacity: 0.4},
+      marker: {line: {width: 2}},
+      customdata : customdata,
+      hovertemplate: hovertemplates,
+    }];
+
+    // 4. Build sunburst
+    this.insightsGraphyDetails = {
+      data: data,
+      layout: {
+        margin: { l: 0, r: 0, t: 30, b: 0 },
+        title: { text: 'Water Payment Sunburst' },
+        width: 700,
+        height: 700
+      }
+    };
+    console.log('Sunburst data:', this.insightsGraphyDetails);
   }
 
 }
