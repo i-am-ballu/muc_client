@@ -29,6 +29,7 @@ export class AuthService {
       last_name : userInfo.last_name,
       admin_id : userInfo.id ? userInfo.id : 0,
       token : userInfo.token,
+      refresh_token : userInfo.refresh_token,
       company_id : userInfo.company_id ? userInfo.company_id : 0,
       water_department : userInfo.water_department ? userInfo.water_department : 0,
     }
@@ -40,7 +41,8 @@ export class AuthService {
   }
  // Get token
   public getToken(): string | null {
-    return this.cookieService.get('token') || null;
+    let userInfo = this.getUserInfo();
+    return userInfo && userInfo.token ? userInfo.token : null;
   }
 
   // Get user info

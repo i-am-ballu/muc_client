@@ -47,9 +47,7 @@ export class SaHomeComponent implements OnInit {
   public collection_count_list : any;
   public water_taken_count_list : any;
   public getSuperAdminSupportDetailsBasedOnCompany(callback: (error: any,result: any) => void){
-    let body = {
-      company_id : this.company_id,
-    }
+    let body = {};
     this.loginService.getSuperAdminSupportDetailsBasedOnCompany(body).subscribe({
       next: (res: any) => {
         if(res.status){

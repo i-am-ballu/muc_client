@@ -9,6 +9,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { CoreModule } from 'src/app/core/core.module'
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     SharedModule,
     NgSelectModule,
     NgxDatatableModule,
+    CoreModule
   ],
   providers: [CookieService, NgSelectModule, NgxDatatableModule, SharedModule, DatePipe],
   bootstrap: [AppComponent]

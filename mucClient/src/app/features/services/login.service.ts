@@ -69,7 +69,7 @@ export class LoginService {
 
   // start for sa-distribution
   getInsightsWaterPayment(body){
-    return this.http.get(this.baseUrl+"/activity_stream/getInsightsWaterPayment/", {params : body});
+    return this.http.post(this.baseUrl+"/activity_stream/getInsightsWaterPayment/", body);
   }
 
   // start for ad-home
