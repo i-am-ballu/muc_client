@@ -67,9 +67,7 @@ export class SaHomeComponent implements OnInit {
 
   public activityStreamScrollableList : any;
   public getSuperAdminActivityStreamBasedOnCompany(callback: (error: any,result: any) => void){
-    let body = {
-      company_id : this.company_id,
-    }
+    let body = {}
     this.loginService.getSuperAdminActivityStreamBasedOnCompany(body).subscribe({
       next: (res: any) => {
         if(res.status){

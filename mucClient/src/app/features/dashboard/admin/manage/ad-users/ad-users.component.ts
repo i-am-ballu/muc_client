@@ -143,10 +143,7 @@ export class AdUsersComponent implements OnInit {
 
   public total_pending_amount : any = 0;
   public getPendingPayments(callback: (error: any,result: any) => void){
-    let body = {
-      company_id : this.company_id,
-      user_id : this.user_id,
-    }
+    let body = {};
     this.loginService.getPendingPayments(body).subscribe({
       next: (res: any) => {
         this.total_pending_amount = res && res.data && res.data.total_pending_amount ? res.data.total_pending_amount : 0;
@@ -161,8 +158,6 @@ export class AdUsersComponent implements OnInit {
   public callMucSaveMethod(value){
     if(parseInt(this.total_pending_amount)){
       let body = {
-        company_id : this.company_id,
-        user_id : this.user_id,
         total_pending_amount : parseInt(this.total_pending_amount)
       }
       this.loginService.upsertPendingPayment(body).subscribe({
