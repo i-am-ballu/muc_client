@@ -4,6 +4,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { TopNavigationComponent } from './components/top-navigation/top-navigation.component';
 import { DataTableComponent } from './components/data-table/data-table.component';
 import { ReusableModalComponent } from './components/reusable-modal/reusable-modal.component';
+import { LoaderComponent } from './components/loader/loader.component';
 
 
 
@@ -11,7 +12,8 @@ import { ReusableModalComponent } from './components/reusable-modal/reusable-mod
   declarations: [
     TopNavigationComponent,
     DataTableComponent,
-    ReusableModalComponent
+    ReusableModalComponent,
+    LoaderComponent
   ],
   imports: [
     CommonModule,
@@ -21,7 +23,8 @@ import { ReusableModalComponent } from './components/reusable-modal/reusable-mod
     TopNavigationComponent,
     DataTableComponent,
     NgxDatatableModule,
-    ReusableModalComponent
+    ReusableModalComponent,
+    LoaderComponent
   ]
 })
 export class SharedModule { }
