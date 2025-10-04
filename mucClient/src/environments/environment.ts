@@ -5,7 +5,7 @@ let http_url = 'http://localhost:8000';
 export const environment = {
   production: false,
   apiBaseUrl : http_url+'/api',
-  idle_time:60, // in minute
+  idle_time:3600, // in minute that 1 hours
 };
 
 /*
