@@ -5,6 +5,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
+import { NgIdleModule } from '@ng-idle/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,7 +24,9 @@ import { CoreModule } from 'src/app/core/core.module'
     SharedModule,
     NgSelectModule,
     NgxDatatableModule,
-    CoreModule
+    CoreModule,
+    NgIdleModule.forRoot(),
+    NgIdleKeepaliveModule.forRoot()
   ],
   providers: [CookieService, NgSelectModule, NgxDatatableModule, SharedModule, DatePipe],
   bootstrap: [AppComponent]

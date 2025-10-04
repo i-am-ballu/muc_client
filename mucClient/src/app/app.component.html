@@ -2,3 +2,11 @@
 <div class="route-outlet-container route-outlet-component">
   <router-outlet></router-outlet>
 </div>
+
+<app-reusable-modal *ngIf="isOpenConfirmation"
+  [mucModalOptions] = "modalOptions"
+  (mucSaveMethod) = "callMucSaveMethod($event)"
+  (mucCancelMethod) = "callMucCancelMethod($event)"
+  (mucCrossMethod) = "callMucCrossMethod($event)"
+>
+</app-reusable-modal>
