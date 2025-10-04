@@ -43,7 +43,8 @@ export class TopNavigationComponent implements OnInit {
 
   public onClickLogout(){
     this.authService.removeCookies();
-    this.cookieService.set('user_info', '', -1, null, null, true, 'None');
+    this.cookieService.deleteAll('/', '/');
+    this.cookieService.set('user_info', '', -1, null, null, true, 'Strict');
     this.router.navigate(['/auth/login']);
   }
 

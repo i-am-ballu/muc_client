@@ -16,6 +16,7 @@ import { SaDistributionComponent } from './superadmin/manage/sa-distribution/sa-
 import { AdHomeComponent } from './admin/ad-home/ad-home.component';
 import { AdManageComponent } from './admin/manage/ad-manage/ad-manage.component';
 import { AdUsersComponent } from './admin/manage/ad-users/ad-users.component';
+import { AdDistributionComponent } from './admin/manage/ad-distribution/ad-distribution.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { AdUsersComponent } from './admin/manage/ad-users/ad-users.component';
     SaDistributionComponent,
     AdHomeComponent,
     AdManageComponent,
-    AdUsersComponent
+    AdUsersComponent,
+    AdDistributionComponent
   ],
   imports: [
     CommonModule,

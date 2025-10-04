@@ -9,6 +9,7 @@ import { SaDistributionComponent } from './superadmin/manage/sa-distribution/sa-
 import { AdHomeComponent } from './admin/ad-home/ad-home.component';
 import { AdManageComponent } from './admin/manage/ad-manage/ad-manage.component';
 import { AdUsersComponent } from './admin/manage/ad-users/ad-users.component';
+import { AdDistributionComponent } from './admin/manage/ad-distribution/ad-distribution.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'user_dashboard', pathMatch: 'full' },
@@ -35,10 +36,10 @@ const routes: Routes = [
         path: 'payment_details',
         component: AdUsersComponent,
       },
-      // {
-      //   path: 'distribution',
-      //   component: SaDistributionComponent
-      // }
+      {
+        path: 'distribution_details',
+        component: AdDistributionComponent
+      }
     ]
   },
   {

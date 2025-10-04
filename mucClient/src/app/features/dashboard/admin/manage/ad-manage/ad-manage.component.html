@@ -11,6 +11,13 @@
           [ngClass]="active_tab === 'payment_details' ? 'active' : ''"
           (click)="loadContent('payment_details')"
         >Payment Details</button>
+
+        <button
+          class="btn w-100 text-start sidebar_button fw-light"
+          [ngClass]="active_tab === 'distribution_details' ? 'active' : ''"
+          (click)="loadContent('distribution_details')"
+        >Distribution Details</button>
+
       </li>
     </ul>
   </div>

@@ -6,11 +6,11 @@ import { LoginService } from "src/app/features/services/login.service";
 import * as _ from 'lodash';
 
 @Component({
-  selector: 'app-sa-distribution',
-  templateUrl: './sa-distribution.component.html',
-  styleUrls: ['./sa-distribution.component.css']
+  selector: 'app-ad-distribution',
+  templateUrl: './ad-distribution.component.html',
+  styleUrls: ['./ad-distribution.component.css']
 })
-export class SaDistributionComponent implements OnInit {
+export class AdDistributionComponent implements OnInit {
 
   constructor(
     private cookieService: CookieService,
@@ -47,7 +47,8 @@ export class SaDistributionComponent implements OnInit {
   public getInsightsWaterPayment(callback: (error: any,result: any) => void){
     let body = {
       company_id : this.company_id,
-      is_superadmin : 1,
+      is_superadmin : 0,
+      is_range_between : 0,
     }
     this.loginService.getInsightsWaterPayment(body).subscribe({
       next: (res: any) => {
@@ -88,9 +89,9 @@ export class SaDistributionComponent implements OnInit {
       // Add user node if not already added
       if (!addedUsers.has(userLabel)) {
         labels.push(userLabel);
-        parents.push('All Users');
+        parents.push('');
         values.push(0); // sum of children
-        ids.push(`user-${row.user_id}`);
+        ids.push(userLabel);
         addedUsers.set(userLabel, { paid: 0, remaining: 0, logs: 0 });
         customdata.push([0, 0, 0]);
         hovertemplates.push(
@@ -106,11 +107,11 @@ export class SaDistributionComponent implements OnInit {
         : 'No Date';
 
       labels.push(waterCaneLabel);
-      parents.push(`user-${row.user_id}`);
+      parents.push(userLabel);
 
       const waterValue = Number(row.paid_amount) + Number(row.remaining_amount) || 1;
       values.push(waterValue);
-      ids.push(`user-${row.user_id}-${row.water_id}`);
+      ids.push(`${userLabel}-${row.water_id}`);
 
       customdata.push([row.paid_amount, row.remaining_amount, logs_count]);
       hovertemplates.push(

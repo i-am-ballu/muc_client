@@ -33,9 +33,10 @@ export class AuthService {
       company_id : userInfo.company_id ? userInfo.company_id : 0,
       water_department : userInfo.water_department ? userInfo.water_department : 0,
     }
+    let user = JSON.stringify(user_obj)
     this.removeCookies();
     this.cookieService.set('user_info', '', -1, null, null, true, 'None');
-    this.cookieService.set('user_info', JSON.stringify(user_obj), this.cookie_expire, null, null, true, 'None');
+    this.cookieService.set('user_info', user, this.cookie_expire, null, null, true, 'None');
     let dashboard_path = user_obj && user_obj.isSuperadmin ? '/dashboard/sa_dashboard' : '/dashboard/ad_dashboard';
     this.router.navigate([dashboard_path]);
   }
@@ -60,5 +61,6 @@ export class AuthService {
   // Logout (clear cookies)
   public removeCookies(){
     this.cookieService.delete('user_info', ' / ', 'localhost');
+    this.cookieService.delete('user_info')
   }
 }
