@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core';
 import { Keepalive } from '@ng-idle/keepalive';
@@ -11,7 +11,7 @@ import { CookieService } from 'ngx-cookie-service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'mucClient';
   public lastPing? : Date = null;
   public timedOut : boolean = false;
@@ -68,8 +68,12 @@ export class AppComponent implements OnInit {
     this.reset();
   }
 
+  private intervalId : any;
   ngOnInit() {
-
+    // Check token every 1 minute (60000 ms)
+    this.intervalId = setInterval(() => {
+      this.authService.checkTokenExpiry();
+    }, 60000);
   }
 
   public modalOptions : any = {};
@@ -126,6 +130,12 @@ export class AppComponent implements OnInit {
     this.cookieService.deleteAll('/', '/');
     this.cookieService.set('user_info', '', -1, null, null, true, 'Strict');
     this.router.navigate(['/auth/login']);
+  }
+
+  ngOnDestroy() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
   }
 
 }

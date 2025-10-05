@@ -48,7 +48,6 @@ export class AdUsersComponent implements OnInit {
   public user_details : any[] = [];
   public getUserBasedOnUserId(callback: (error: any,result: any) => void){
     let body = {
-      company_id : this.company_id,
       user_id : this.user_id,
     }
     this.loginService.getUserDetailsBasedOnUserId(body).subscribe({

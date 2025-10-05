@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import jwtDecode from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -62,5 +63,34 @@ export class AuthService {
   public removeCookies(){
     this.cookieService.delete('user_info', ' / ', 'localhost');
     this.cookieService.delete('user_info')
+  }
+
+  public isTokenExpired(): boolean {
+    const token = this.getToken();
+    if(!token){
+      return true;
+    }
+    try {
+      const decoded: any = jwtDecode(token);
+      const expiry = decoded.exp * 1000; // exp is in seconds → convert to ms
+      return Date.now() > expiry;
+    } catch (error) {
+      console.error('Invalid token:', error);
+      return true;
+    }
+  }
+
+  public checkTokenExpiry(): void {
+    if(this.isTokenExpired()){
+      console.log('Token expired — logging out proactively');
+      this.logout();
+    }
+  }
+
+  public logout(){
+    this.removeCookies();
+    this.cookieService.deleteAll('/', '/');
+    this.cookieService.set('user_info', '', -1, null, null, true, 'Strict');
+    this.router.navigate(['/auth/login']);
   }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -19,7 +20,16 @@ export class TokenInterceptorService implements HttpInterceptor {
           Authorization: `Bearer ${token}`
         }
       });
-      return next.handle(cloned);
+
+      return next.handle(cloned).pipe(
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 401 || error.status === 403) {
+            console.log('Server says token is expired or invalid');
+            this.authService.logout();
+          }
+          return throwError(error);
+        })
+      );
     }
 
     return next.handle(req);

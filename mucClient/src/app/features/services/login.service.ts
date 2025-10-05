@@ -41,7 +41,7 @@ export class LoginService {
   }
 
   getUserDetailsBasedOnUserId(body){
-    return this.http.get(this.baseUrl+"/water_logs/payment-status/", {params : body});
+    return this.http.post(this.baseUrl+"/water_logs/getUserPaymentStatusDetails/", body);
   }
 
   upsertUserDetailsBasedOnUserId(body){
@@ -56,6 +56,10 @@ export class LoginService {
 
   getSuperAdminActivityStreamBasedOnCompany(body){
     return this.http.get(this.baseUrl+"/activity_stream/getSuperAdminActivityStreamBasedOnCompany/", {params : body});
+  }
+
+  getYearMonthListBasedOnUserId(body){
+    return this.http.get(this.baseUrl+"/activity_stream/getYearMonthListBasedOnUserId/", {params : body});
   }
 
   // start for sa-user Component

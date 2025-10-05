@@ -17,65 +17,135 @@
     </app-data-table>
   </div>
 
-  <div class="user-container" *ngIf="isVisibleUserDetails">
-    <div class="user-card" *ngFor="let user of user_details">
-      <!-- Header -->
-      <div class="user-header">
-        <div class="user-info gap-2">
-          <span>{{ user.user_name }}</span>
-          <span>|</span>
-          <span>{{ user.last_payment_date}}</span>
-        </div>
-        <button class="btn" [ngClass]="user.open ? 'btn-secondary' : 'btn-primary'" (click)="toggleRow(user)">
-          {{ user.open ? 'Close' : 'Edit' }}
-        </button>
-      </div>
-
-      <!-- Expanded Rows -->
-      <div class="rows-container" *ngIf="user && user.open">
-        <div class="row" *ngFor="let row of user.rows" [formGroup]="row.userLitersForm">
-          <div class="row-field">
-            <label class="w-28">Date</label>
-            <input
-              class="border px-2 py-1 rounded flex-1"
-              type="date"
-              formControlName="log_created_on"
-            />
-          </div>
-          <div class="row-field" *ngIf="!water_department">
-            <label class="w-28">Liters</label>
-            <input
-              class=" px-2 py-1 rounded flex-1"
-              type="number"
-              formControlName="liters"
-              [ngClass]="(isSubmit && row.userLitersForm.get('liters')?.errors?.required) ? 'form-control is-invalid' : 'border'"
-            />
-          </div>
-          <div class="row-field" *ngIf="water_department">
-            <label class="w-28">Cane</label>
-            <input
-              class=" px-2 py-1 rounded flex-1"
-              type="number"
-              formControlName="water_cane"
-              [ngClass]="(isSubmit && row.userLitersForm.get('water_cane')?.errors?.required) ? 'form-control is-invalid' : 'border'"
-            />
-          </div>
-          <div class="row-field">
-            <label class="w-28">Paid Amount</label>
-            <input
-              class="border px-2 py-1 rounded flex-1"
-              type="number"
-              formControlName="paid_amount"
-            />
+  <!-- <div class="user-container" >
+    <div class="" *ngIf="isVisibleYearDetails">
+      <div class="user-card" *ngFor="let year_obj of year_month_details">
+        <div class="user-header">
+          <div class="user-info gap-2">
+            <span>{{ year_obj.year }}</span>
           </div>
         </div>
 
-        <!-- Save / Cancel Buttons -->
-        <div class="d-flex justify-content-end gap-3 pt-3">
-          <button class="px-4 py-1 btn btn-primary" (click)="onClickSave(user)">Save</button>
-          <button class="px-4 py-1 btn btn-secondary" (click)="onClickCancel(user)">Cancel</button>
+
+        <div class="month-list">
+          <button
+            class="btn btn-primary m-1"
+            *ngFor="let month of year_obj.months"
+            (click)="onMonthSelect(year_obj.year, month.value)">
+            {{ month.label }}
+          </button>
         </div>
       </div>
     </div>
+
+    <div class="" *ngIf="isVisibleUserDetails">
+      <div class="user-card" *ngFor="let user of user_details">
+
+        <div class="user-header">
+          <div class="user-info gap-2">
+            <span>{{ user.user_name }}</span>
+            <span>|</span>
+            <span>{{ user.last_payment_date}}</span>
+          </div>
+          <button class="btn" [ngClass]="user.open ? 'btn-secondary' : 'btn-primary'" (click)="toggleRow(user)">
+            {{ user.open ? 'Close' : 'Edit' }}
+          </button>
+        </div>
+
+          <div class="d-flex justify-content-end gap-3 pt-3">
+            <button class="px-4 py-1 btn btn-primary" (click)="onClickSave(user)">Save</button>
+            <button class="px-4 py-1 btn btn-secondary" (click)="onClickCancel(user)">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div> -->
+
+  <div class="user-container" *ngIf="isVisibleYearDetails">
+  <div class="user-card">
+
+    <div class="user-info flex-between" *ngIf="selected_user_full_name">
+      <strong>{{ selected_user_full_name }}</strong>
+    </div>
+    <hr class="custom_hr_line">
+    <!-- Header: Years -->
+    <div class="years_row">
+      <button
+        *ngFor="let year_obj of year_month_details"
+        class="btn"
+        [ngClass]="selectedYear === year_obj.year ? 'btn-primary' : 'btn-secondary'"
+        (click)="onClickYear(year_obj.year)">
+        {{ year_obj.year }}
+      </button>
+    </div>
+
+    <hr class="custom_hr_line">
+
+    <!-- Months Row -->
+    <div class="months_row" *ngIf="selectedYear">
+      <button
+        *ngFor="let month of getMonthsByYear(selectedYear)"
+        class="btn"
+        [ngClass]="selectedMonth === month.value ? 'btn-primary' : 'btn-secondary'"
+        (click)="onMonthSelect(selectedYear, month.value)">
+        {{ month.label }}
+      </button>
+    </div>
+
+    <!-- Users Table -->
+    <div class="users-table" *ngIf="isVisibleUserDetails">
+      <div class="user-row" *ngFor="let user of user_details">
+        <!-- Expanded Rows -->
+        <div class="rows-container" *ngIf="user && user.open">
+            <div class="row" *ngFor="let row of user.rows" [formGroup]="row.userLitersForm">
+              <div class="row-field">
+                <label class="w-28">Date</label>
+                <input
+                  class="border px-2 py-1 rounded flex-1"
+                  type="date"
+                  formControlName="log_created_on"
+                />
+              </div>
+              <div class="row-field" *ngIf="!water_department">
+                <label class="w-28">Liters</label>
+                <input
+                  class=" px-2 py-1 rounded flex-1"
+                  type="number"
+                  formControlName="liters"
+                  [ngClass]="(isSubmit && row.userLitersForm.get('liters')?.errors?.required) ? 'form-control is-invalid' : 'border'"
+                />
+              </div>
+              <div class="row-field" *ngIf="water_department">
+                <label class="w-28">Cane</label>
+                <input
+                  class=" px-2 py-1 rounded flex-1"
+                  type="number"
+                  formControlName="water_cane"
+                  [ngClass]="(isSubmit && row.userLitersForm.get('water_cane')?.errors?.required) ? 'form-control is-invalid' : 'border'"
+                />
+              </div>
+              <div class="row-field">
+                <label class="w-28">Paid Amount</label>
+                <input
+                  class="border px-2 py-1 rounded flex-1"
+                  type="number"
+                  formControlName="paid_amount"
+                />
+              </div>
+            </div>
+
+          <div class="d-flex justify-content-end gap-3 pt-3">
+            <button class="px-4 py-1 btn btn-primary" (click)="onClickSave(user)">Save</button>
+            <button class="px-4 py-1 btn btn-secondary" (click)="onClickCancel(user)">Cancel</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </div>
+</div>
+
+
 </div>

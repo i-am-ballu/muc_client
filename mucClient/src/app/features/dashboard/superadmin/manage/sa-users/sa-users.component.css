@@ -12,40 +12,52 @@
   padding: 1rem;
 }
 
-.user-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .user-info {
   display: flex;
 }
 
-.email {
-  font-size: 0.85rem;
-  color: #666;
+.years_row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
 }
 
-.toggle-btn {
-  padding: 0.25rem 0.5rem;
-  border: none;
-  background: var(--primary-color);
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
+.months_row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  padding-top: 0.5rem;
+}
+
+.users-table {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.user-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .rows-container {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  margin-top: 0.75rem;
 }
 
 .row {
   display: flex;
   gap: 1rem;
+  flex-wrap: wrap;
   border-top: 1px solid #eee;
   padding-top: 0.5rem;
 }
@@ -53,7 +65,11 @@
 .row-field {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  flex: 1 1 150px;
+}
+
+.custom_hr_line {
+  border-top: var(--bs-border-width) var(--bs-gray-500) solid !important;
 }
 
 .is-invalid {

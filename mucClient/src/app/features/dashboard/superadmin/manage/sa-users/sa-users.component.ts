@@ -32,12 +32,14 @@ export class SaUsersComponent implements OnInit {
   public company_id : number = 0;
   public user_id : number = 0;
   public water_department : boolean = false;
+  public selected_user_full_name : string = '';
 
   public onClickAbleRow(value){
     let row_data = value && value.row ? value.row : {};
     this.user_id = row_data && row_data.user_id ? row_data.user_id : 0;
     this.company_id = row_data && row_data.company_id ? row_data.company_id : 0;
-    this.getUserBasedOnUserId();
+    this.selected_user_full_name = row_data && row_data.full_name ? row_data.full_name : '';
+    this.getYearMonthListBasedOnUserId();
   }
 
   constructor(
@@ -84,11 +86,78 @@ export class SaUsersComponent implements OnInit {
     });
   }
 
+  public isVisibleYearDetails : boolean = false;
+  public year_month_details : any[] = [];
+  public getYearMonthListBasedOnUserId(){
+    let body = {
+      user_id : this.user_id,
+    }
+    this.loginService.getYearMonthListBasedOnUserId(body).subscribe({
+      next: (res: any) => {
+        this.isVisibleYearDetails = true;
+        let year_month_details = res && res.data && res.data.length ? res.data : [];
+        this.initializationYearMonthList(year_month_details);
+        console.log('res -------', res)
+      },
+      error: err => {
+        console.log('error--------', err)
+      }
+    });
+  }
+
+  public initializationYearMonthList(year_month_details){
+    const grouped = year_month_details && year_month_details.length ? _.groupBy(year_month_details, 'year') : [];
+    this.year_month_details = _.map(grouped, (months, year) => ({
+      year: parseInt(year),
+      months: months.map(m => ({ value: m.month_value, label: m.month_label }))
+    }));
+  }
+
+  public selectedYear : any;
+  public selectedMonth : any;
+  public onClickYear(year){
+    this.selectedYear = year;
+    this.selectedMonth = null;
+    this.user_details = [];
+    this.isVisibleUserDetails = false;
+  }
+
+  public getMonthsByYear(year: number) {
+    const yearObj = this.year_month_details.find(y => y.year === year);
+    return yearObj ? yearObj.months : [];
+  }
+
+  public onMonthSelect(year: number, monthValue: string) {
+    this.selectedMonth = monthValue;
+    this.isVisibleUserDetails = false;
+    this.getUserBasedOnUserId();
+  }
+
+  public getMonthStartEndTimestamps(monthValue: string) {
+    // Parse the month and year
+    const [year, month] = monthValue.split('-').map(Number);
+
+    // Start of month (1st day, midnight)
+    const startDate = new Date(year, month - 1, 1, 0, 0, 0, 0);
+
+    // End of month (last day, 23:59:59.999)
+    const endDate = new Date(year, month, 0, 23, 59, 59, 999);
+
+    return {
+      startDate: startDate.getTime(), // bigint-like timestamp
+      endDate: endDate.getTime()
+    };
+  }
+
   public isVisibleUserDetails : boolean = false;
   public user_details : any[] = [];
   public getUserBasedOnUserId(){
+    let sd_obj = this.getMonthStartEndTimestamps(this.selectedMonth);
     let body = {
       user_id : this.user_id,
+      start_date : sd_obj && sd_obj.startDate ? sd_obj.startDate : 0,
+      end_date : sd_obj && sd_obj.endDate ? sd_obj.endDate : 0,
+      is_range_between : 1,
     }
     this.loginService.getUserDetailsBasedOnUserId(body).subscribe({
       next: (res: any) => {
@@ -135,7 +204,7 @@ export class SaUsersComponent implements OnInit {
         user_id: firstRow.user_id,
         user_name: firstRow.user_name,
         last_payment_date: this.datePipe.transform(last_payment_date, 'dd MMM yyyy, h:mm:ss a'),
-        open: false,
+        open: true,
         rows: processedRows
       };
     });
