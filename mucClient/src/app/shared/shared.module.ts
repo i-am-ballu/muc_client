@@ -5,6 +5,7 @@ import { TopNavigationComponent } from './components/top-navigation/top-navigati
 import { DataTableComponent } from './components/data-table/data-table.component';
 import { ReusableModalComponent } from './components/reusable-modal/reusable-modal.component';
 import { LoaderComponent } from './components/loader/loader.component';
+import { ImportDataComponent } from './components/import-data/import-data.component';
 
 
 
@@ -13,7 +14,8 @@ import { LoaderComponent } from './components/loader/loader.component';
     TopNavigationComponent,
     DataTableComponent,
     ReusableModalComponent,
-    LoaderComponent
+    LoaderComponent,
+    ImportDataComponent
   ],
   imports: [
     CommonModule,
@@ -24,7 +26,8 @@ import { LoaderComponent } from './components/loader/loader.component';
     DataTableComponent,
     NgxDatatableModule,
     ReusableModalComponent,
-    LoaderComponent
+    LoaderComponent,
+    ImportDataComponent
   ]
 })
 export class SharedModule { }

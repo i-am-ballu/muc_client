@@ -75,3 +75,7 @@
 .is-invalid {
   border-color: var(--bs-form-invalid-border-color);
 }
+
+.import_data_section {
+  max-width : 50%;
+}

@@ -39,6 +39,8 @@ export class SaUsersComponent implements OnInit {
     this.user_id = row_data && row_data.user_id ? row_data.user_id : 0;
     this.company_id = row_data && row_data.company_id ? row_data.company_id : 0;
     this.selected_user_full_name = row_data && row_data.full_name ? row_data.full_name : '';
+    this.selectedYear = '';
+    this.resetRequiredVariable();
     this.getYearMonthListBasedOnUserId();
   }
 
@@ -242,13 +244,18 @@ export class SaUsersComponent implements OnInit {
 
     this.loginService.upsertUserDetailsBasedOnUserId(body).subscribe({
       next: (res: any) => {
-        console.log('res -------', res)
-        this.getUserBasedOnUserId();
+        console.log('res -------', res);
+        this.resetRequiredVariable();
       },
       error: err => {
         console.log('error--------', err)
       }
     });
+  }
+
+  public resetRequiredVariable(){
+    this.isVisibleUserDetails = false;
+    this.user_details = [];
   }
 
 }

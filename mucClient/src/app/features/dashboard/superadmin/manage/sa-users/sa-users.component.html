@@ -17,53 +17,8 @@
     </app-data-table>
   </div>
 
-  <!-- <div class="user-container" >
-    <div class="" *ngIf="isVisibleYearDetails">
-      <div class="user-card" *ngFor="let year_obj of year_month_details">
-        <div class="user-header">
-          <div class="user-info gap-2">
-            <span>{{ year_obj.year }}</span>
-          </div>
-        </div>
-
-
-        <div class="month-list">
-          <button
-            class="btn btn-primary m-1"
-            *ngFor="let month of year_obj.months"
-            (click)="onMonthSelect(year_obj.year, month.value)">
-            {{ month.label }}
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div class="" *ngIf="isVisibleUserDetails">
-      <div class="user-card" *ngFor="let user of user_details">
-
-        <div class="user-header">
-          <div class="user-info gap-2">
-            <span>{{ user.user_name }}</span>
-            <span>|</span>
-            <span>{{ user.last_payment_date}}</span>
-          </div>
-          <button class="btn" [ngClass]="user.open ? 'btn-secondary' : 'btn-primary'" (click)="toggleRow(user)">
-            {{ user.open ? 'Close' : 'Edit' }}
-          </button>
-        </div>
-
-          <div class="d-flex justify-content-end gap-3 pt-3">
-            <button class="px-4 py-1 btn btn-primary" (click)="onClickSave(user)">Save</button>
-            <button class="px-4 py-1 btn btn-secondary" (click)="onClickCancel(user)">Cancel</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div> -->
-
   <div class="user-container" *ngIf="isVisibleYearDetails">
-  <div class="user-card">
+    <div class="user-card">
 
     <div class="user-info flex-between" *ngIf="selected_user_full_name">
       <strong>{{ selected_user_full_name }}</strong>
@@ -95,6 +50,16 @@
 
     <!-- Users Table -->
     <div class="users-table" *ngIf="isVisibleUserDetails">
+
+      <div class="import_data_section">
+        <app-import-data
+          [userId]="selectedUserId"
+          (saveClicked)="onSaveFile($event)"
+          (cancelClicked)="onCancelImport()"
+          (downloadTemplateClicked)="onDownloadTemplate($event)"
+        ></app-import-data>
+      </div>
+
       <div class="user-row" *ngFor="let user of user_details">
         <!-- Expanded Rows -->
         <div class="rows-container" *ngIf="user && user.open">
@@ -144,8 +109,6 @@
       </div>
     </div>
 
+    </div>
   </div>
-</div>
-
-
 </div>

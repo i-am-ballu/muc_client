@@ -67,96 +67,143 @@ export class SaDistributionComponent implements OnInit {
   public insightsGraphyDetails : any;
 
   public processToCreateInsightGraphy() {
-    if (!this.insightsWaterDetails || !this.insightsWaterDetails.length) return;
+    if(!this.insightsWaterDetails || !this.insightsWaterDetails.length) return;
+
+    interface NodeData {
+      id: string;
+      label: string;
+      parent: string;    // '' for root
+      value: number;     // numeric value used by Plotly
+      paid: number;
+      remaining: number;
+      canes: number;
+      isLeaf: boolean;
+    }
+
+    const nodeMap = new Map<string, NodeData>();
+
+    const rootId = 'root';
+    nodeMap.set(rootId, {
+      id: rootId,
+      label: 'All Users',
+      parent: '',
+      value: 0,
+      paid: 0,
+      remaining: 0,
+      canes: 0,
+      isLeaf: false
+    });
+
+    const addNodeIfMissing = (id: string, label: string, parent: string, isLeaf = false) => {
+      if (!nodeMap.has(id)) {
+        nodeMap.set(id, {
+          id,
+          label,
+          parent,
+          value: 0,
+          paid: 0,
+          remaining: 0,
+          canes: 0,
+          isLeaf
+        });
+      }
+    };
+
+    // 1) Create nodes and accumulate leaf (month) totals
+    this.insightsWaterDetails.forEach(row => {
+      const userId = `user-${row.user_id}`;
+      const yearId = `${userId}-${row.year}`;
+      const monthId = `${yearId}-${row.month_value}`; // e.g. user-3-2025-2025-08
+
+      const userLabel = row.user_name.replace(/\s+/g, ' ').trim();
+      const yearLabel = `${row.year}`;
+      const monthLabel = row.month_label;
+
+      addNodeIfMissing(userId, userLabel, rootId, false);
+      addNodeIfMissing(yearId, yearLabel, userId, false);
+      addNodeIfMissing(monthId, monthLabel, yearId, true);
+
+      const paid = Number(row.paid_amount) || 0;
+      const remaining = Number(row.remaining_amount) || 0;
+      const canes = Number(row.water_cane) || 0;
+
+      // Choose sizing metric here. Current: total money (paid + remaining).
+      // If you want sunburst size by canes, replace with: const leafValue = canes;
+      const leafValue = paid + remaining;
+
+      const monthNode = nodeMap.get(monthId)!;
+      monthNode.paid += paid;
+      monthNode.remaining += remaining;
+      monthNode.canes += canes;
+      monthNode.value += leafValue;
+    });
+
+    // 2) Aggregate upward so each parent.value = sum(children.value)
+    // Sort nodes by depth (deeper nodes first) so aggregation flows upward
+    const nodesArray = Array.from(nodeMap.values());
+    nodesArray.sort((a, b) => b.id.split('-').length - a.id.split('-').length);
+
+    for (const node of nodesArray) {
+      if (!node.parent) continue;
+      const parentNode = nodeMap.get(node.parent);
+      if (!parentNode) continue;
+      parentNode.paid += node.paid;
+      parentNode.remaining += node.remaining;
+      parentNode.canes += node.canes;
+      parentNode.value += node.value;
+    }
+
+    // 3) Build arrays for Plotly (order root → users → years → months for readability)
+    const sortedForPlot = Array.from(nodeMap.values()).sort((a, b) => {
+      const depthA = a.id.split('-').length;
+      const depthB = b.id.split('-').length;
+      if (depthA !== depthB) return depthA - depthB; // shallow first
+      return a.id.localeCompare(b.id);
+    });
 
     const labels: string[] = [];
     const parents: string[] = [];
-    const values: (number | null)[] = [];
     const ids: string[] = [];
+    const values: number[] = [];
     const customdata: any[] = [];
-    const hovertemplates: any[] = [];
 
-    // 1. Track which users are already added
-    const addedUsers = new Map<string, { paid: number; remaining: number, logs: number }>();
-
-    // 2. Single loop over data
-    this.insightsWaterDetails.forEach(row => {
-      let logs_count = 1;
-      const userLabel = `${row.user_name}`;
-      const waterCaneLabel = `Cane: ${row.water_cane}`
-
-      // Add user node if not already added
-      if (!addedUsers.has(userLabel)) {
-        labels.push(userLabel);
-        parents.push('All Users');
-        values.push(0); // sum of children
-        ids.push(`user-${row.user_id}`);
-        addedUsers.set(userLabel, { paid: 0, remaining: 0, logs: 0 });
-        customdata.push([0, 0, 0]);
-        hovertemplates.push(
-          '%{label}<br>Paid: %{customdata[0]}<br>Remaining: %{customdata[1]}<br>Logs: %{customdata[2]}<extra></extra>'
-        );
-      }
-
-      const userData = addedUsers.get(userLabel)!;
-
-      // Add water log node (always, even if water_cane = 0)
-      const waterDate = row.water_log_c_date
-        ? this.datePipe.transform(new Date(row.water_log_c_date), 'yyyy-MM-dd')
-        : 'No Date';
-
-      labels.push(waterCaneLabel);
-      parents.push(`user-${row.user_id}`);
-
-      const waterValue = Number(row.paid_amount) + Number(row.remaining_amount) || 1;
-      values.push(waterValue);
-      ids.push(`user-${row.user_id}-${row.water_id}`);
-
-      customdata.push([row.paid_amount, row.remaining_amount, logs_count]);
-      hovertemplates.push(
-        '%{label}<br>Paid: %{customdata[0]}<br>Remaining: %{customdata[1]}<extra></extra>'
-      );
-
-      // Update user totals
-      userData.paid += Number(row.paid_amount);
-      userData.remaining += Number(row.remaining_amount);
-      userData.logs += Number(logs_count);
+    sortedForPlot.forEach(n => {
+      labels.push(n.label);
+      parents.push(n.parent);         // root has ''
+      ids.push(n.id);
+      // Use the numeric value (parent == sum(children))
+      values.push(n.value);
+      // customdata: [paid, remaining, canes]
+      customdata.push([n.paid, n.remaining, n.canes]);
     });
 
-    // 3. Update user nodes hover with totals
-    addedUsers.forEach((userData, userLabel) => {
-      const userIndex = labels.indexOf(userLabel);
-      if (userIndex !== -1) {
-        customdata[userIndex] = [userData.paid, userData.remaining, userData.logs];
+    // 4) Plotly sunburst config
+    const data = [
+      {
+        type: 'sunburst',
+        labels: labels,
+        parents: parents,
+        ids: ids,
+        values: values,
+        branchvalues: 'total', // parent value must equal sum(children) — satisfied now
+        customdata: customdata,
+        hovertemplate:
+          '%{label}<br>Total Canes: %{customdata[2]}<br>Paid: %{customdata[0]}<br>Remaining: %{customdata[1]}<extra></extra>',
+        outsidetextfont: { size: 14, color: '#377eb8' },
+        leaf: { opacity: 0.6 },
+        marker: { line: { width: 2 } }
       }
-    });
+    ];
 
-    const data = [{
-      type: "sunburst",
-      labels: labels,
-      parents: parents,
-      ids: ids,
-      values:  values,
-      outsidetextfont: {size: 20, color: "#377eb8"},
-      leaf: {opacity: 0.4},
-      marker: {line: {width: 2}},
-      customdata : customdata,
-      hovertemplate: hovertemplates,
-    }];
-
-    // 4. Build sunburst
     this.insightsGraphyDetails = {
-      data: data,
+      data,
       layout: {
-        margin: { l: 0, r: 0, t: 30, b: 0 },
-        title: { text: 'Water Payment Sunburst' },
-        autosize: true,
+        title: { text: '💧 Water Payment Sunburst (Users → Years → Months)' },
+        margin: { l: 0, r: 0, t: 40, b: 0 },
+        autosize: true
       },
-      config: {
-        responsive: true   // ✅ key for responsiveness
-      }
+      config: { responsive: true }
     };
-    console.log('Sunburst data:', this.insightsGraphyDetails);
   }
 
 }

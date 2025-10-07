@@ -1,0 +1,17 @@
+
+<div class="import-container">
+  <div class="import_file_upload">
+    <button type="button" class="btn browse-btn btn-medium btn-secondary">
+      BROWSE
+    </button>
+    <input
+      type="file"
+      id="uploadFiles"
+      (change)="uploadFiles($event, sp, 'realized_sales')"
+      name="file"
+    />
+  </div>
+  <a class="download-template" (click)="onClickDownloadTemplate()">
+    Click here to download Template File
+  </a>
+</div>
