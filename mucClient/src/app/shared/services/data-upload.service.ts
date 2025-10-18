@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from 'src/environments/environment';
 
@@ -11,26 +12,37 @@ export class DataUploadService {
 
   constructor(
     private cookieService: CookieService,
+    private http: HttpClient
   ) { }
 
-  public downloadTemplate(serverFilename: string){
+  public downloadTemplate(user_id, file_name){
     let userInfo = this.cookieService.check('user_info') ? JSON.parse(this.cookieService.get('user_info')) : {};
-    let userId = 0;
-    let fileName =  1+"_"+1+"_"+userInfo.company_id+"_details.xlsx";
-    let path = this.baseUrl+"csv/"+fileName; //removed extra slash('/') from path
-    console.log("path path path path", path);
-
     let linkElement = document.createElement('a');
-    let url = path+"?request_type=export&token="+userInfo.token;
-    linkElement.setAttribute('href', url);
-    linkElement.setAttribute("download", fileName);
-    let clickEvent = new MouseEvent("click", {
-      "view": window,
-      "bubbles": true,
-      "cancelable": false
+    let path = this.baseUrl+"/water_logs/csv/" + file_name;
+    let url =  path + "?user_id=" + user_id;
+
+    if(!userInfo.token){
+      console.error('No JWT token found.');
+      return;
+    }
+    // Set Authorization header
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${userInfo.token}`
     });
-    setTimeout(() => {
-      linkElement.dispatchEvent(clickEvent);
-    }, 100);
+
+    // Make GET request to get the file as Blob
+    this.http.get(url, { headers, responseType: 'blob' }).subscribe((blob: Blob) => {
+      // Create a temporary link to download
+      const a = document.createElement('a');
+      const objectUrl = URL.createObjectURL(blob);
+      a.href = objectUrl;
+      a.download = file_name;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(objectUrl);
+    }, error => {
+      console.error('Download error', error);
+    });
   }
 }

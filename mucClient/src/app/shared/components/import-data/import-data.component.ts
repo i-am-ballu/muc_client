@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { DataUploadService } from 'src/app/shared/services/data-upload.service'
+import { LoginService } from "src/app/features/services/login.service";
 
 @Component({
   selector: 'app-import-data',
@@ -8,13 +9,27 @@ import { DataUploadService } from 'src/app/shared/services/data-upload.service'
 })
 export class ImportDataComponent implements OnInit {
 
-  @Input() userId!: number;
+  public user_id : number = 0;
+  @Input('selectedUserId')set selectedUserId(value) {
+    if(value){
+      this.user_id = value;
+    }
+  }
+
+  public month_name : string = '';
+  @Input('selectedMonth')set selectedMonth(value) {
+    if(value){
+      this.month_name = value;
+    }
+  }
+
   @Output() saveClicked = new EventEmitter<File>();
   @Output() cancelClicked = new EventEmitter<void>();
   @Output() downloadTemplateClicked = new EventEmitter<number>();
 
   constructor(
     private dataUploadService : DataUploadService,
+    private loginService : LoginService,
   ) { }
 
   ngOnInit() {
@@ -95,10 +110,18 @@ export class ImportDataComponent implements OnInit {
 
   public onClickDownloadTemplate(){
     const obj = {
-      user_id: 0,
-      period: 'January 2025',
+      user_id: this.user_id,
+      month_name: this.month_name,
     };
-    this.dataUploadService.downloadTemplate('my.xlsx');
+    this.loginService.downloadMonthlyTemplate(obj).subscribe({
+      next: (res: any) => {
+        console.log('res -------', res.data)
+        this.dataUploadService.downloadTemplate(this.user_id,res.data.filename);
+      },
+      error: err => {
+        console.log('error--------', err)
+      }
+    });
   }
 
   public downloadTemplate(){

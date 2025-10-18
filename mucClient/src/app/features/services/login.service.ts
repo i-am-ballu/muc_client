@@ -71,6 +71,10 @@ export class LoginService {
     return this.http.post<any>(this.baseUrl+"/water_logs/insert_payments/", body);
   }
 
+  downloadMonthlyTemplate(body){
+    return this.http.post<any>(this.baseUrl+"/water_logs/downloadMonthlyTemplate/", body);
+  }
+
   // start for sa-distribution
   getInsightsWaterPayment(body){
     return this.http.post(this.baseUrl+"/activity_stream/getInsightsWaterPayment/", body);

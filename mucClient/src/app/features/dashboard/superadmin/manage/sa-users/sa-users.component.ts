@@ -129,8 +129,10 @@ export class SaUsersComponent implements OnInit {
     return yearObj ? yearObj.months : [];
   }
 
-  public onMonthSelect(year: number, monthValue: string) {
+  public select_month_name : any;
+  public onMonthSelect(year: number, monthValue: string, label: string) {
     this.selectedMonth = monthValue;
+    this.select_month_name = label;
     this.isVisibleUserDetails = false;
     this.getUserBasedOnUserId();
   }

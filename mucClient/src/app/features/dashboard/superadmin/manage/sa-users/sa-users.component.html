@@ -43,7 +43,7 @@
         *ngFor="let month of getMonthsByYear(selectedYear)"
         class="btn"
         [ngClass]="selectedMonth === month.value ? 'btn-primary' : 'btn-secondary'"
-        (click)="onMonthSelect(selectedYear, month.value)">
+        (click)="onMonthSelect(selectedYear, month.value, month.label)">
         {{ month.label }}
       </button>
     </div>
@@ -53,7 +53,8 @@
 
       <div class="import_data_section">
         <app-import-data
-          [userId]="selectedUserId"
+          [selectedUserId]="user_id"
+          [selectedMonth]="select_month_name"
           (saveClicked)="onSaveFile($event)"
           (cancelClicked)="onCancelImport()"
           (downloadTemplateClicked)="onDownloadTemplate($event)"
