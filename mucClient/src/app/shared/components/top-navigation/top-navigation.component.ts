@@ -17,7 +17,15 @@ export class TopNavigationComponent implements OnInit {
     private cookieService: CookieService,
     private router: Router,
     private authService : AuthService,
-  ) { }
+  ) {
+    this.authService.onTopNavigationComponentToggle(this.startGettingUserInfo.bind(this));
+  }
+
+  public startGettingUserInfo(value){
+    let userInfo = this.getUserInfo();
+    this.isLoggedIn = userInfo && userInfo.login ? userInfo.login : false;
+    this.isSuperadmin = userInfo && userInfo.isSuperadmin ? userInfo.isSuperadmin : false;
+  }
 
   ngOnInit() {
     let userInfo = this.getUserInfo();
@@ -42,6 +50,8 @@ export class TopNavigationComponent implements OnInit {
   }
 
   public onClickLogout(){
+    this.isSuperadmin = false;
+    this.isLoggedIn = false;
     this.authService.removeCookies();
     this.cookieService.deleteAll('/', '/');
     this.cookieService.set('user_info', '', -1, null, null, true, 'Strict');

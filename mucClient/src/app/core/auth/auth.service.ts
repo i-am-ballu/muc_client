@@ -38,6 +38,7 @@ export class AuthService {
     this.removeCookies();
     this.cookieService.set('user_info', '', -1, null, null, true, 'None');
     this.cookieService.set('user_info', user, this.cookie_expire, null, null, true, 'None');
+    this.myTopNavigationComponentMethod();
     let dashboard_path = user_obj && user_obj.isSuperadmin ? '/dashboard/sa_dashboard' : '/dashboard/ad_dashboard';
     this.router.navigate([dashboard_path]);
   }
@@ -89,8 +90,21 @@ export class AuthService {
 
   public logout(){
     this.removeCookies();
+    this.myTopNavigationComponentMethod();
     this.cookieService.deleteAll('/', '/');
     this.cookieService.set('user_info', '', -1, null, null, true, 'Strict');
     this.router.navigate(['/auth/login']);
+  }
+
+
+  private myTopNavigationFunction: (value) => void;
+  public onTopNavigationComponentToggle(fn: () => void) {
+    this.myTopNavigationFunction = fn;
+  }
+
+  public myTopNavigationComponentMethod(value){
+    if(this.myTopNavigationFunction){
+      this.myTopNavigationFunction(value);
+    }
   }
 }
