@@ -260,4 +260,8 @@ export class SaUsersComponent implements OnInit {
     this.user_details = [];
   }
 
+  public onCallImportDataClicked(event){
+      this.getUserBasedOnUserId();
+  }
+
 }

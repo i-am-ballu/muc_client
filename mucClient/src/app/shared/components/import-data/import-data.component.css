@@ -38,6 +38,15 @@
   height: 100%;
 }
 
+.import_file_name {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 10px 10px 0px 10px;
+
+}
+
 .download-template {
   display: inline-block;
   margin-top: 8px;

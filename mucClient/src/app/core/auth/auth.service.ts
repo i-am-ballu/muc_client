@@ -90,21 +90,21 @@ export class AuthService {
 
   public logout(){
     this.removeCookies();
-    this.myTopNavigationComponentMethod();
     this.cookieService.deleteAll('/', '/');
     this.cookieService.set('user_info', '', -1, null, null, true, 'Strict');
+    this.myTopNavigationComponentMethod();
     this.router.navigate(['/auth/login']);
   }
 
 
-  private myTopNavigationFunction: (value) => void;
+  private myTopNavigationFunction: () => void;
   public onTopNavigationComponentToggle(fn: () => void) {
     this.myTopNavigationFunction = fn;
   }
 
-  public myTopNavigationComponentMethod(value){
+  public myTopNavigationComponentMethod(){
     if(this.myTopNavigationFunction){
-      this.myTopNavigationFunction(value);
+      this.myTopNavigationFunction();
     }
   }
 }

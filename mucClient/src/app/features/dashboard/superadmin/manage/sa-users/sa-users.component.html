@@ -55,7 +55,7 @@
         <app-import-data
           [selectedUserId]="user_id"
           [selectedMonth]="select_month_name"
-          (saveClicked)="onSaveFile($event)"
+          (onImportDataClicked)="onCallImportDataClicked($event)"
           (cancelClicked)="onCancelImport()"
           (downloadTemplateClicked)="onDownloadTemplate($event)"
         ></app-import-data>

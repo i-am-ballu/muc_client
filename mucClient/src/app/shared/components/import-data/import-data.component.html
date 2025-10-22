@@ -1,10 +1,12 @@
 
 <div class="import-container">
   <div class="import_file_upload">
+    <p _ngcontent-erh-c14="" class="import_file_name"> {{fileName}} </p>
     <button type="button" class="btn browse-btn btn-medium btn-secondary">
       BROWSE
     </button>
     <input
+      [title]="fileName"
       type="file"
       id="uploadFiles"
       (change)="uploadFiles($event, sp, 'realized_sales')"

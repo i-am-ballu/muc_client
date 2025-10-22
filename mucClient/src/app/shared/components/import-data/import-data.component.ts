@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { DataUploadService } from 'src/app/shared/services/data-upload.service'
 import { LoginService } from "src/app/features/services/login.service";
 
@@ -23,7 +24,7 @@ export class ImportDataComponent implements OnInit {
     }
   }
 
-  @Output() saveClicked = new EventEmitter<File>();
+  @Output() onImportDataClicked = new EventEmitter<File>();
   @Output() cancelClicked = new EventEmitter<void>();
   @Output() downloadTemplateClicked = new EventEmitter<number>();
 
@@ -36,75 +37,87 @@ export class ImportDataComponent implements OnInit {
   }
 
 
-  // public uploadFiles(event: Event): void {
-  //   const input = event.target as HTMLInputElement;
-  //   if (!input.files || input.files.length === 0) return;
-  //
-  //   this.file = input.files[0];
-  //   this.fileName = this.file.name;
-  //
-  //   // Optional: reset the progress bar
-  //   this.progress = 0;
-  //
-  //   // Proceed with upload
-  //   this.uploadProductWiseData(this.file);
-  //
-  //   // Reset file input so user can re-upload same file without refresh
-  //   input.value = '';
-  // }
+  public progress : any = 0;
+  public fileName : any;
+  public file : any;
+  public uploadedFileName : any = '';
 
-  // uploadProductWiseData(file: File): void {
-  //   // Create FormData
-  //   const formData = new FormData();
-  //   formData.append('file', file);
-  //   formData.append('called_from_sts', 'true');
-  //
-  //   // ✅ Validate file type (example: Excel only)
-  //   const allowedExtensions = /\.(xls|xlsx|csv)$/i;
-  //   if (!allowedExtensions.test(this.fileName)) {
-  //     this.alertSuccessErrorMsg('Please upload a valid Excel file (.xls, .xlsx, or .csv).', false, false);
-  //     return;
-  //   }
+  public uploadFiles(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) return;
 
-    // Upload via service
-    // this.datauploadService.uploadExcelFile(formData).subscribe({
-    //   next: (responseEvent: HttpEvent<any>) => {
-    //     switch (responseEvent.type) {
-    //       case HttpEventType.Sent:
-    //         // Request sent
-    //         break;
-    //
-    //       case HttpEventType.UploadProgress:
-    //         this.progress = Math.round((responseEvent.loaded / (responseEvent.total || 1)) * 100);
-    //         break;
-    //
-    //       case HttpEventType.Response:
-    //         const { status, body } = responseEvent;
-    //         if (status === 200 && body?.status) {
-    //           this.uploadedFileName = body.filename;
-    //           this.alertSuccessErrorMsg('File uploaded successfully.', true, false);
-    //         } else {
-    //           this.alertSuccessErrorMsg(body?.message || 'Error in uploading file.', false, true);
-    //         }
-    //         break;
-    //     }
-    //   },
-    //   error: (err) => {
-    //     console.error('Upload failed:', err);
-    //     this.alertSuccessErrorMsg('Error in uploading file.', false, true);
-    //   },
-    // });
-  // }
+    this.file = input.files[0];
+    this.fileName = this.file.name;
 
+    // Optional: reset the progress bar
+    this.progress = 0;
+    this.uploadProductWiseData(this.file);
 
-  onSave() {
-    // if (this.selectedFile) {
-      this.saveClicked.emit();
-    // }
+    // Reset file input so user can re-upload same file without refresh
+    input.value = '';
+  }
+
+  public uploadProductWiseData(file: File): void {
+    this.uploadedFileName = '';
+    // Create FormData
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('called_from_sts', 'true');
+
+    // ✅ Validate file type (example: Excel only)
+    const allowedExtensions = /\.(xls|xlsx|csv)$/i;
+    if(!allowedExtensions.test(this.fileName)){
+      console.log('Please upload a valid Excel file (.xls, .xlsx, or .csv).')
+      return;
+    }
+
+    this.loginService.uploadExcelFile(formData).subscribe({
+      next: (responseEvent: HttpEvent<any>) => {
+        switch(responseEvent.type){
+          case HttpEventType.Sent:
+            // Request sent
+            break;
+
+          case HttpEventType.UploadProgress:
+            this.progress = Math.round((responseEvent.loaded / (responseEvent.total || 1)) * 100);
+            break;
+
+          case HttpEventType.Response:
+            const { status, body } = responseEvent;
+            if(status === 200 && body && body.status){
+              this.uploadedFileName = body.data.filename;
+              this.importComponentWaterLogsData()
+              console.log('File uploaded successfully.');
+            }else{
+              console.log('Error in uploading file.');
+            }
+            break;
+        }
+      },
+      error: (err) => {
+        console.error('Upload failed:', err);
+        console.log('Error in uploading file.');
+      },
+    });
+  }
+
+  public importComponentWaterLogsData(){
+    let body = {
+      user_id : this.user_id,
+      filename : this.uploadedFileName,
+    }
+    this.loginService.importComponentWaterLogsData(body).subscribe({
+      next: (res: any) => {
+        console.log('res -------', res);
+        this.onImportDataClicked.emit();
+      },
+      error: err => {
+        console.log('error--------', err)
+      }
+    });
   }
 
   onCancel() {
-    // this.selectedFile = null;
     this.cancelClicked.emit();
   }
 

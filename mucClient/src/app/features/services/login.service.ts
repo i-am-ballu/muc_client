@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -75,6 +77,19 @@ export class LoginService {
     return this.http.post<any>(this.baseUrl+"/water_logs/downloadMonthlyTemplate/", body);
   }
 
+  uploadExcelFile(obj){
+    return this.http.post<any>(this.baseUrl+"/water_logs/uploadExcelFile/",obj,{
+      reportProgress: true,
+      observe: 'events'
+    }).pipe(
+      catchError(this.errorMgmt)
+    );
+  }
+
+  importComponentWaterLogsData(body){
+    return this.http.post<any>(this.baseUrl+"/water_logs/importComponentWaterLogsData/", body);
+  }
+
   // start for sa-distribution
   getInsightsWaterPayment(body){
     return this.http.post(this.baseUrl+"/activity_stream/getInsightsWaterPayment/", body);
@@ -87,5 +102,21 @@ export class LoginService {
 
   getAdminActivityStreamBasedOnCompany(body){
     return this.http.get(this.baseUrl+"/activity_stream/getAdminActivityStreamBasedOnCompany/", {params : body});
+  }
+
+
+
+  // common function
+
+  errorMgmt(error: HttpErrorResponse){
+    let errorMessage = '';
+    if(error.error instanceof ErrorEvent){
+      // Get client-side error
+      errorMessage = error.error.message;
+    }else{
+      // Get server-side error
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    }
+    return throwError(errorMessage);
   }
 }
