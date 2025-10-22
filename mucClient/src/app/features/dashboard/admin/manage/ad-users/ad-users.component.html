@@ -1,83 +1,82 @@
-<div class="container mt-4">
-  <form [formGroup]="usersForm" (ngSubmit)="onSubmit()">
+<div class="flex flex-col w-full gap-4">
 
-    <div formArrayName="users" class="d-flex flex-column gap-3">
-      <div
-        *ngFor="let user of users.controls; let i = index"
-        [formGroupName]="i"
-        class="d-flex flex-wrap align-items-center gap-3 p-3 border rounded"
-      >
-        <div class="d-flex flex-column flex-33">
-          <label class="fw-bold mb-1">Name</label>
-          <input
-            class="border px-2 py-1 rounded flex-1"
-            type="input"
-            formControlName="user_name"
-          />
+  <div class="user-container" *ngIf="isVisibleYearDetails">
+    <div class="user-card">
+
+        <div class="years_row">
+          <button
+            *ngFor="let year_obj of year_month_details"
+            class="btn"
+            [ngClass]="selectedYear === year_obj.year ? 'btn-primary' : 'btn-secondary'"
+            (click)="onYearClick(year_obj.year)">
+            {{ year_obj.year }}
+          </button>
         </div>
 
-        <div class="d-flex flex-column flex-33" *ngIf="!water_department">
-          <label class="fw-bold mb-1">Liters</label>
-          <input
-            class="border px-2 py-1 rounded flex-1"
-            type="number"
-            formControlName="liters"
-          />
+        <hr class="custom_hr_line" *ngIf="selectedYear">
+
+        <div class="months_row" *ngIf="selectedYear">
+          <button
+            *ngFor="let month of getMonthsByYear(selectedYear)"
+            class="btn"
+            [ngClass]="selectedMonth === month.value ? 'btn-primary' : 'btn-secondary'"
+            (click)="onMonthClick(selectedYear, month.value, month.label)">
+            {{ month.label }}
+          </button>
         </div>
 
-        <div class="d-flex flex-column flex-33" *ngIf="water_department">
-          <label class="fw-bold mb-1">Water Cane</label>
-          <input
-            class="border px-2 py-1 rounded flex-1"
-            type="number"
-            formControlName="water_cane"
-          />
+        <div *ngIf="selectedMonth && selectedYear && isVisibleUserDetails" class="user-row">
+          <form [formGroup]="usersForm" (ngSubmit)="onSubmit()">
+            <div formArrayName="users" class="d-flex flex-column gap-3">
+              <div *ngFor="let user of users.controls; let i = index"
+                   [formGroupName]="i"
+                   class="d-flex flex-wrap align-items-center gap-3 p-3 border rounded">
+
+                <div class="d-flex flex-column flex-33">
+                  <label class="fw-bold mb-1">Name</label>
+                  <input class="border px-2 py-1 rounded flex-1" type="input" formControlName="user_name" />
+                </div>
+
+                <div class="d-flex flex-column flex-33" *ngIf="!water_department">
+                  <label class="fw-bold mb-1">Liters</label>
+                  <input class="border px-2 py-1 rounded flex-1" type="number" formControlName="liters" />
+                </div>
+
+                <div class="d-flex flex-column flex-33" *ngIf="water_department">
+                  <label class="fw-bold mb-1">Water Cane</label>
+                  <input class="border px-2 py-1 rounded flex-1" type="number" formControlName="water_cane" />
+                </div>
+
+                <div class="d-flex flex-column flex-33">
+                  <label class="fw-bold mb-1">Paid Amount</label>
+                  <input class="border px-2 py-1 rounded flex-1" type="number" formControlName="paid_amount" />
+                </div>
+
+                <div class="d-flex flex-column flex-33">
+                  <label class="fw-bold mb-1">Payment Status</label>
+                  <input class="border px-2 py-1 rounded flex-1" type="input" formControlName="payment_status" />
+                </div>
+
+                <div class="d-flex flex-column flex-33">
+                  <label class="fw-bold mb-1">Date</label>
+                  <input class="border px-2 py-1 rounded flex-1" type="date" formControlName="log_created_on" />
+                </div>
+
+                <div class="d-flex flex-column flex-33">
+                  <label class="fw-bold mb-1">Last Paid Date</label>
+                  <input class="border px-2 py-1 rounded flex-1" type="date" formControlName="last_payment_date" />
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex gap-3 mt-4 justify-content-center">
+              <button type="button" class="btn btn-primary" (click)="onClickPay()">Pay</button>
+            </div>
+          </form>
         </div>
 
-        <div class="d-flex flex-column flex-33">
-          <label class="fw-bold mb-1">Paid Amount</label>
-          <input
-            class="border px-2 py-1 rounded flex-1"
-            type="number"
-            formControlName="paid_amount"
-          />
-        </div>
-
-        <div class="d-flex flex-column flex-33">
-          <label class="fw-bold mb-1">Payment Status</label>
-          <input
-            class="border px-2 py-1 rounded flex-1"
-            type="input"
-            formControlName="payment_status"
-          />
-        </div>
-
-        <div class="d-flex flex-column flex-33">
-          <label class="fw-bold mb-1">Date</label>
-          <input
-            class="border px-2 py-1 rounded flex-1"
-            type="date"
-            formControlName="log_created_on"
-          />
-        </div>
-
-        <div class="d-flex flex-column flex-33">
-          <label class="fw-bold mb-1">Last Paid Date</label>
-          <input
-            class="border px-2 py-1 rounded flex-1"
-            type="date"
-            formControlName="last_payment_date"
-          />
-        </div>
-
-      </div>
     </div>
-
-    <!-- Actions -->
-    <div class="d-flex gap-3 mt-4 justify-content-center">
-      <button type="button" class="btn btn-primary" (click)="onClickPay()">Pay</button>
-    </div>
-  </form>
+  </div>
 </div>
 
 <app-reusable-modal *ngIf="isOpenConfirmation"

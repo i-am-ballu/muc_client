@@ -33,7 +33,7 @@ export class AdUsersComponent implements OnInit {
           this.company_id = res && res.company_id ? res.company_id : 0;
           this.user_id = res && res.admin_id ? res.admin_id : 0;
           this.water_department = res && res.water_department ? true : false;
-          this.getUserBasedOnUserId((error,res) => {});
+          this.getYearMonthListBasedOnUserId();
         }
     });
   }
@@ -45,13 +45,87 @@ export class AdUsersComponent implements OnInit {
     callback(null,userInfo ? userInfo : {})
   }
 
-  public user_details : any[] = [];
-  public getUserBasedOnUserId(callback: (error: any,result: any) => void){
+  public isVisibleYearDetails : boolean = false;
+  public year_month_details : any[] = [];
+  public getYearMonthListBasedOnUserId(){
     let body = {
       user_id : this.user_id,
     }
+    this.loginService.getYearMonthListBasedOnUserId(body).subscribe({
+      next: (res: any) => {
+        this.isVisibleYearDetails = true;
+        let year_month_details = res && res.data && res.data.length ? res.data : [];
+        this.initializationYearMonthList(year_month_details);
+        console.log('res -------', res)
+      },
+      error: err => {
+        console.log('error--------', err)
+      }
+    });
+  }
+
+  public initializationYearMonthList(year_month_details){
+    const grouped = year_month_details && year_month_details.length ? _.groupBy(year_month_details, 'year') : [];
+    this.year_month_details = _.map(grouped, (months, year) => ({
+      year: parseInt(year),
+      months: months.map(m => ({ value: m.month_value, label: m.month_label }))
+    }));
+  }
+
+  public selectedYear: number | null = null;
+  public selectedMonth: string | null = null;
+
+  public onYearClick(year: number) {
+    this.selectedYear = this.selectedYear === year ? null : year;
+    this.selectedMonth = null;
+    this.user_details = [];
+    this.isVisibleUserDetails = false;
+  }
+
+  public getMonthsByYear(year: number) {
+    const yearObj = this.year_month_details.find(y => y.year === year);
+    return yearObj ? yearObj.months : [];
+  }
+
+  public select_month_name : any;
+  public onMonthClick(year: number, monthValue: string, label: string) {
+    this.selectedMonth = this.selectedMonth === monthValue ? null : monthValue;
+    this.select_month_name = label;
+    this.isVisibleUserDetails = false;
+    this.user_details = [];
+    this.getUserBasedOnUserId((error,res) => {});
+  }
+
+  public getMonthStartEndTimestamps(monthValue: string) {
+    // Parse the month and year
+    const [year, month] = monthValue.split('-').map(Number);
+
+    // Start of month (1st day, midnight)
+    const startDate = new Date(year, month - 1, 1, 0, 0, 0, 0);
+
+    // End of month (last day, 23:59:59.999)
+    const endDate = new Date(year, month, 0, 23, 59, 59, 999);
+
+    return {
+      startDate: startDate.getTime(), // bigint-like timestamp
+      endDate: endDate.getTime()
+    };
+  }
+
+  public user_details : any[] = [];
+  public isVisibleUserDetails : boolean = false;
+
+  public getUserBasedOnUserId(callback: (error: any,result: any) => void){
+    let sd_obj = this.getMonthStartEndTimestamps(this.selectedMonth);
+    let body = {
+      user_id : this.user_id,
+      start_date : sd_obj && sd_obj.startDate ? sd_obj.startDate : 0,
+      end_date : sd_obj && sd_obj.endDate ? sd_obj.endDate : 0,
+      is_range_between : 1,
+    }
     this.loginService.getUserDetailsBasedOnUserId(body).subscribe({
       next: (res: any) => {
+        this.isVisibleUserDetails = true;
         this.user_details = res && res.data && res.data.length ? res.data : [];
         this.patchUserDetails(this.user_details);
         callback(null, res);
@@ -60,6 +134,11 @@ export class AdUsersComponent implements OnInit {
         callback(err, null);
       }
     });
+  }
+
+  public resetRequiredVariable(){
+    this.isVisibleUserDetails = false;
+    this.user_details = [];
   }
 
   public usersForm: FormGroup;
@@ -109,7 +188,6 @@ export class AdUsersComponent implements OnInit {
     });
   }
 
-  public
   public isOpenConfirmation : boolean = false;
   public modalOptions : any = {};
 
@@ -142,7 +220,9 @@ export class AdUsersComponent implements OnInit {
 
   public total_pending_amount : any = 0;
   public getPendingPayments(callback: (error: any,result: any) => void){
-    let body = {};
+    let body = {
+      month_name : this.select_month_name,
+    };
     this.loginService.getPendingPayments(body).subscribe({
       next: (res: any) => {
         this.total_pending_amount = res && res.data && res.data.total_pending_amount ? res.data.total_pending_amount : 0;
@@ -157,7 +237,8 @@ export class AdUsersComponent implements OnInit {
   public callMucSaveMethod(value){
     if(parseInt(this.total_pending_amount)){
       let body = {
-        total_pending_amount : parseInt(this.total_pending_amount)
+        total_pending_amount : parseInt(this.total_pending_amount),
+        month_name : this.select_month_name,
       }
       this.loginService.upsertPendingPayment(body).subscribe({
         next: (res: any) => {

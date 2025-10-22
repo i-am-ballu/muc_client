@@ -4,6 +4,14 @@
   gap: 1rem;
 }
 
+.user-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
 .rows-container {
   display: flex;
   flex-direction: column;
@@ -27,4 +35,29 @@
 .flex-33 {
   flex: 1 1 calc(33.333% - 1rem);
   max-width: 33.333%;
+}
+
+.years_row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.months_row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  padding-top: 0.5rem;
+}
+
+.user-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.custom_hr_line {
+  margin: 0.5rem 0 !important;
+  border-top: var(--bs-border-width) var(--bs-gray-500) solid !important;
 }
